@@ -1,0 +1,12 @@
+Le sujet du TP de lundi 18 mars est disponible sur un dépôt git:
+
+Dans un shell unix:
+
+# Récupérer le code:
+git clone https://forge.p2chpd.univ-lyon1.fr/geoffroy.berret/PrograWebSources.git
+# Aller dans le répertoire des sources du TP:
+cd PrograWebSources/Découverte_Flask
+# Initialiser l'environnement et lancer un serveur web de developpement:
+./do serve
+
+Pour arrêter le serveur: Ctrl+C

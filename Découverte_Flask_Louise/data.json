@@ -1,0 +1,32 @@
+{
+  "USERS" : [
+    {"id": 0,
+     "name": "Alan Turing", "wikipageid": "1208",
+     "birth": "1912-6-23T00:00:00.000Z", "gender": "m" },
+    {"id": 1,
+     "name": "Katherine Johnson", "wikipageid": 25568315,
+     "birth": "1918-8-26T00:00:00.000Z", "gender": "f" },
+    {"id": 2,
+     "name": "John Neumann", "wikipageid": "15942",
+     "birth": "1903-12-28T00:00:00.000Z", "gender": "m" },
+    {"id": 3,
+     "name": "Grace Hopper", "wikipageid": "12590",
+     "birth": "1906-12-9T00:00:00.000Z", "gender": "f" },
+    {"id": 4,
+     "name": "Kurt Gödel", "wikipageid": "16736",
+     "birth": "1906-4-28T00:00:00.000Z", "gender": "m" },
+    {"id": 5,
+     "name": "Richard Feynman", "wikipageid": "25523",
+     "birth": "1918-5-11T00:00:00.000Z", "gender": "m" },
+    {"id": 6,
+     "name": "Richard Dawkins", "wikipageid": "25867",
+     "birth": "1941-3-26T00:00:00.000Z", "gender": "m" }
+],
+  "FIELDS" : {
+    "logic": [0, 2, 4],
+    "mathematics": [0, 1, 2, 4],
+    "computer science": [0, 1, 2, 3],
+    "physics": [5],
+    "biology": [6]
+    }
+}

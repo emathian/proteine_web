@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mt-5">Analyse de séquences nucléotidiques et protéiques</h1>
+
+
+  <article>
+	<form  method="post">
+		<legend>Choix du type de séquence :</legend>
+			<input type="radio" id="prot" name="type" value="prot" checked> <label for="prot">Protéique</label>
+			<input type="radio" id="nucl" name="type" value="nucl"> <label for="nucl">Nucléotidique</label><br />
+		<legend>Identifiant séquence (ID Uniprot ou EMBL) :</legend>
+			<input  placeholder="ID" aria-label="Search" type="text" name="id"><br />
+		<legend>Voulez-vous tracer des graphiques ?</legend>
+			<input type="radio" id="oui" name="choix" value="oui" checked> <label for="oui">Oui</label>
+			<input type="radio" id="non" name="choix" value="non"> <label for="non">Non</label><br /><br />
+      	<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
+		
+	</form>
+  </article>
+{% endblock %}
+
+<!-- vim: set filetype=html spell spelllang=en: -->

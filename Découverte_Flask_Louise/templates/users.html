@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+      <h1 class="mt-5">Users</h1>
+      <div class="alert alert-info" role="alert">
+      <p class="lead">Use Jinja templating system to produce a list of users in data.py.<br />
+      Follow the documentation: <a href="http://flask.pocoo.org/docs/1.0/quickstart/#rendering-templates">flask.pocoo.org/docs/1.0/quickstart/#rendering-templates</a>.
+      </div>
+      {% if user %}
+         <h2>{{user}}</h2>
+         <ul>
+          <li>Birth date : {{birth}}</li>
+          <li>Gender : {{gender}}</li>
+          <li>User id : {{user_id}}</li>
+          <li>Fields : {{fields}}</li>
+         </ul>
+      {% elif error %}
+          <h2>{{error}}</h2>
+      {% else %}
+        {% if filtre %}
+          {% for user in users %}
+            {% if user['name'] in filtre %}
+              <ul>
+               <li><a href="/users/{{user['name']}}/">{{user["name"]}}</a></li>
+              </ul>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          {% for user in users %}
+            <ul>
+             <li><a href="/users/{{user['name']}}/">{{user["name"]}}</a></li>
+            </ul>
+          {% endfor %}
+        {% endif %}
+      {% endif %}
+{% endblock %}

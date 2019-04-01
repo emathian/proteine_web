@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mt-5">BioInfo 4A Web development</h1>
+<p class="lead">An introduction to REST API development with <a
+  href="https://www.python.org">Python3</a> &amp; <a
+  href="http://flask.pocoo.org/docs/1.0/quickstart/">Flask</a> micro framework</p>
+  <article id="intro" class="to_hide">
+    <div><hr /></div>
+    <h2 class="nocount">Get the sources</h2>
+      <div class="alert alert-primary" role="alert">
+        <h4 class="nocount"><a href="https://forge.p2chpd.univ-lyon1.fr/geoffroy.berret/PrograWebSources" class="font-weight-bold">https://forge.p2chpd.univ-lyon1.fr/geoffroy.berret/PrograWebSources</a></h4>
+        <code class="font-weight-bold">git clone https://forge.p2chpd.univ-lyon1.fr/geoffroy.berret/PrograWebSources.git</code>
+      </div>
+    <h2 class=nocount>Then setup the environment</h2>
+      <p>Open a terminal an run the following commands:<br />
+      <pre class="text-monospace"><code>cd Découverte_Flask && ./do
+./do serve</code></pre>
+    <input class="btn btn-primary" id="hideIntro" type="button" value="hide" />
+  </article>
+
+  <article>
+  <div class="to_hide"><hr /></div>
+
+  <h1>Setting up an API</h1>
+  <div class="alert alert-primary" role="alert">
+    <p class="lead">The API will serve representation in JSON by default.</p>
+    <p>To do so, use high level helper in Flask such as</p>
+    <ul>
+      <li><a href="http://flask.pocoo.org/docs/1.0/api/?highlight=json#flask.json.jsonify"><code>flask.json.jsonify(*args, **kwargs)</code></a>.</li>
+      <li><a href="http://flask.pocoo.org/docs/1.0/api/?highlight=json#flask.json.dumps"><code>flask.json.dumps(*args, **kwargs)</code></a>.</li>
+    </ul>
+    <p class="lead">The API is defined within <code>./api.py</code> and exposed
+    in the Flask app through <a href="http://flask.pocoo.org/docs/1.0/blueprints/#blueprints">blueprints</a> in <code>./app.py</code>.</p>
+    <p>All API resources are exposed under <code>/api/</code> path (cf. <code>./app.py</code>).</p>
+
+    <p>The API should follow as much as possible the REST principles.</p>
+  </div>
+
+    <h2>Add end point to list users</h2>
+    <p>Add an <code><a href="api/users">api/users</a></code> resource that list users in json.</p>
+    <h2>Add end point to expose single user resource</h2>
+    <p>Expose all information for a user. Allow at least an alternative representation, txt, xml, yaml…</p>
+    <p>Use MIME type for Accept/Content-Type headers directive as you did with the hello_world exercise (cf. <a href="https://developer.mozilla.org/fr/docs/Web/HTTP/Basics_of_HTTP/MIME_types">MIME_types</a> if needed).</p>
+
+    <h2>Filter the user list</h2>
+    <p>Use the query string of the GET request to filter users list on a specific field (no multi-field filtering).</p>
+    <p>Start with a simple filter on gender, then support name as well, but only one per request.</p>
+    <p>The resource should be something like: <a href="api/users/?field=value">api/users/?field=value</a>.</p>
+
+    <h2>Set user end point to accept resource modification</h2>
+    <p>Allow modification of user information. The payload would be a subset a users information json formated.</p>
+    <p>For instance modify "name" case or "birth" date. Payload example: " <code>{ "name": "John Von Neumann" }</code> "</p>
+    <p><span class="lead">TIP:</span> <a href="{{ url_for('help') }}">Use <code>curl</code> to test</a>. You can also set an html form, not as elegant as cli though 😉</p>
+    <p>With <code>curl</code>, you can modify <em>"John Neumann"</em> entry:<br />
+    <code>curl -d '{ "name": "John Von Neumann" }' -H "Content-Type: application/json" -X POST  http://127.0.0.1:8000/api/users</code></p>
+    <p>Then check in the <a href="{{ url_for('users') }}">user list</a> if your modification is there ! Or simply fetch it with curl.</p>
+
+    <h2>Add new user</h2>
+    <p>Use a JSON payload, only add 'name', 'birth' and 'gender' keys.</p>
+    <p>Payload example: " <code>{ "name": "Joan Clarke", "birth": "1917-06-24T00:00:00.000Z", "gender": "f" }</code> ".</p>
+    <p><span class="lead">TIP:</span> Use <code>curl</code> the same way you did for the previous exercise but with a different json payload.</p>
+
+  </article>
+{% endblock %}
+
+<!-- vim: set filetype=html spell spelllang=en: -->
