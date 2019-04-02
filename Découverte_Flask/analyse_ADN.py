@@ -38,8 +38,6 @@ def contenu_C_et_G(seq,taille=-1): # Renvoie le poucentage de C+G contenue dans 
                 contenu.append(0)
         return(contenu)
     else:
-        print("---------------\nAttention : Arret du programme.\n\nCe programme ne fonctionne que pour des sequence de longueur minimum "+str(taille)+",\n ou de taille de fenetre maximale "+str(longueur))
-        print("Changez de sequence ou de taille de fenetre.\n---------------")
         return('')
 
 
@@ -62,8 +60,6 @@ def nb_CpG(seq,taille=-1): # Renvoie le nombre de couple CG presents dans la seq
             contenu_CpG.append(CpG)
         return(contenu_CpG)
     else:
-        print("---------------\nAttention : Arret du programme.\n\nCe programme ne fonctionne que pour des sequence de longueur minimum "+str(taille)+",\n ou de taille de fenetre maximale "+str(longueur))
-        print("Changez de sequence ou de taille de fenetre.\n---------------")
         return('')
 
 def contenu_C_et_G_et_nb_CpG(seq,taille=-1,comp=-1): # Renvoie le poucentage de C+G et le nombre de couple CG contenue dans la sequence (par defaut) ou dans toutes les fenetres glissante de longueurs donnees.
@@ -100,8 +96,6 @@ def contenu_C_et_G_et_nb_CpG(seq,taille=-1,comp=-1): # Renvoie le poucentage de 
                 contenu.append(0)
         return(contenu,contenu_CpG)
     else:
-        print("---------------\nAttention : Arret du programme.\n\nCe programme ne fonctionne que pour des sequence de longueur minimum "+str(taille)+",\n ou de taille de fenetre maximale "+str(longueur))
-        print("Changez de sequence ou de taille de fenetre.\n---------------")
         return('','')
 
 def rapport_CpG(seq,taille=-1): # Renvoie le rapport CpG de la sequence (par defaut) ou dans toutes les fenetres glissante de longueurs donnees.
@@ -123,8 +117,6 @@ def rapport_CpG(seq,taille=-1): # Renvoie le rapport CpG de la sequence (par def
                 rapports.append("NA")
         return(rapports)
     else:
-        print("---------------\nAttention : Arret du programme.\n\nCe programme ne fonctionne que pour des sequence de longueur minimum "+str(taille)+",\n ou de taille de fenetre maximale "+str(longueur))
-        print("Changez de sequence ou de taille de fenetre.\n---------------")
         return('')
 
 def rapport_CpG_nb_CpG_contenu_C_et_G(seq,taille=-1,comp=-1): # Renvoie le rapportCpG, le nombre observe CpG et le pourcentage de C+G de de la sequence (par defaut) ou dans toutes les fenetres glissante de longueurs donnees.
@@ -162,8 +154,6 @@ def rapport_CpG_nb_CpG_contenu_C_et_G(seq,taille=-1,comp=-1): # Renvoie le rappo
                 rapports.append("NA")
         return(rapports,nb_observe,contenu)
     else:
-        print("---------------\nAttention : Arret du programme.\n\nCe programme ne fonctionne que pour des sequence de longueur minimum "+str(taille)+",\n ou de taille de fenetre maximale "+str(longueur))
-        print("Changez de sequence ou de taille de fenetre.\n---------------")
         return('','','')
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -180,7 +170,6 @@ def fenetre_seq(seq,taille):# Fonction tres generale mais qui est trop gourmande
             fenetre=seq[i:i+taille]
             fenetres.append(fenetre)
     else:
-        print("---------------\nAttention : Arret du programme.\n\nCe programme ne fonctionne que pour des sequence de longueur minimum "+str(taille)+".\n---------------")
         fenetres=''
     return(fenetres)
 
@@ -191,91 +180,3 @@ def temperature_fusion(seq): # Permet de calculer la temperature de fusion d'une
 
 
 
-#Main:
-
-if __name__=="__main__":
-    print(" -> GSELL Louise")
-    print(" -> Projet L3 BIM 2017, Module : Analyse de sequence nucleique")
-    print("\n")
-    print(" -> exemples d'applications des fonctions de ce module\n")
-
-    # Sequence teste :
-    
-    seq="ATTTGATCCCGTAGCGATCAGTACAGTACATAGGTTACGCATTAGCGAGTACCGATTTAGCAACGATAGACA"
-    print('seq="ATTTGATCCCGTAGCGATCAGTACAGTACATAGGTTACGCATTAGCGAGTACCGATTTAGCAACGATAGACA"\n')
-    print("len(seq)")
-    print(len(seq))
-    print("\n")
-
-    # Pour tester la fonction "composition":
-    
-    print("composition(seq)")
-    compo=composition(seq)
-    print(compo)
-    print("\n")
-
-    # Pour tester la fonction "contenu_C_et_G:
-    
-    print("contenu_C_et_G(seq)")
-    C_G=contenu_C_et_G(seq)
-    print(C_G)
-    print("\n")
-
-    # Pour tester la fonction "nb_CpG":
-
-    print("nb_CpG(seq)")
-    CpG=nb_CpG(seq)
-    print()
-    print("\n")
-
-     # Pour tester la fonction "contenu_C_et_G_et_nb_CpG" sur des fenetres glissante de 50 nucleotides:
-
-    print("contenu_C_et_G_et_nb_CpG(seq,50)")
-    C_G,nbCpG=contenu_C_et_G_et_nb_CpG(seq,50)
-    print("pourcentage de C+G : ",C_G,"nombre de couple CG : ",nbCpG)
-    print("\n")
-    
-    # Pour tester la fonction "contenu_C_et_G_et_nb_CpG" sur des fenetres glissante de 200 nucleotides donc plus longues que la sequence:
-    
-    print("contenu_C_et_G_et_nb_CpG(seq,200)")
-    C_G,nbCpG=contenu_C_et_G_et_nb_CpG(seq,200)
-    print("pourcentage de C+G : ",C_G,"nombre de couple CG : ",nbCpG)
-    print("\n")
-    
-    # Pour tester la fonction "contenu_C_et_G_et_nb_CpG" sur la sequence entiere de 2 manieres:
-
-    print("contenu_C_et_G_et_nb_CpG(seq,len(seq))")
-    C_G,nbCpG=contenu_C_et_G_et_nb_CpG(seq,len(seq))
-    print("pourcentage de C+G : ",C_G,"nombre de couple CG : ",nbCpG)
-    print("\n")
-
-    print("contenu_C_et_G_et_nb_CpG(seq)")
-    C_G,nbCpG=contenu_C_et_G_et_nb_CpG(seq)
-    print("pourcentage de C+G : ",C_G,"nombre de couple CG : ",nbCpG)
-    print("\n")
-    
-    # Pour tester la fonction "rapport_CpG":
-
-    print("rapport_CpG(seq)")
-    ratio=rapport_CpG(seq)
-    print(ratio)
-    print("\n")
-
-    # Pour tester la fonction "rapport_CpG_nb_CpG_contenu_C_et_G":
-    
-    print("rapport_CpG_nb_CpG_contenu_C_et_G(seq)")
-    ratio,CpG,CG=rapport_CpG_nb_CpG_contenu_C_et_G(seq)
-    print("rapport_CpG : ",ratio,"nb CpG : ",CpG,"pourcentage C+G : ",CG)
-    print("\n")
-    # Test des fonctions supplementaires:
-    
-    print(" -> Pour aller plus loin...\n")
-    
-    print("fenetre_seq(seq,71)")
-    fenetres=fenetre_seq(seq,71)
-    print(fenetres)
-    print("\n")
-
-    print("temperature_fusion(seq)")
-    temp=temperature_fusion(seq)
-    print(temp)

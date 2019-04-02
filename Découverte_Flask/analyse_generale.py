@@ -14,9 +14,9 @@ def choix(type_seq, graph, id_seq):
 	if type(seq)==int:
 		error=des
 		type_error=seq
-		return(error,type_error)
+		return("",error,type_error)
 	if type_seq=="prot":
 		fichier,error,type_error=asf.resultat_prot(des,seq)
 	else:
-		pass
+		fichier,error,type_error=asf.resultat_ADN(des,seq)
 	return(fichier,error,type_error)

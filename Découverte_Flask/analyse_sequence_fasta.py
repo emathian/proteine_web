@@ -22,22 +22,11 @@ def resultat_ADN(des, seq, compo=-1, keys=-1):
 	de texte ou un tableur comme Excel) et une image des graphiques qu'elle engendre sous certaines conditions. Elle prend en arguments une 
 	description et la sequence correspondante au minimum. En troisieme argument elle prend la composition de la sequence (compo=) sous forme de 
 	dictionnaire, par defaut cette composition est calculee dans la procedure. De meme en quatrieme argument elle prend la liste des caracteres 
-	composants la sequence (keys=) (chacun ecrit entre guillemets), par defaut cette liste est calculee par la procedure."""  
-
-
-	if compo==-1: # Permet une utilisation dans un cas plus general dans lequel l'utilisateur ne disposerait pas de la composition de la sequnece.
-		compo=an.composition(seq)
-	if keys==-1: # Permet une utilisation dans un cas plus general dans lequel l'utilisateur ne disposerait pas d'une liste des caractères composants la sequnece.
-		keys=[]
-		for key in compo.keys():
-			keys.append(key)
-	nom="Analyse_seq_nucl_%s\n"%(des)
-
-#------Envoie du nom fichier au client-------#
-	nom=nom.encode()
-	con.sendall(nom)
-	rep=con.recv(255).decode()
-#---------------------------------------------#
+	composants la sequence (keys=) (chacun ecrit entre guillemets), par defaut cette liste est calculee par la procedure."""
+	compo=an.composition(seq)
+	keys=[]
+	for key in compo.keys():
+	  keys.append(key)
 
 	CG,pourcentCpG=an.contenu_C_et_G_et_nb_CpG(seq, con, comp=compo) # Recuperation du pourcentage de C+G dans la sequence.
 	pourcentCpG=pourcentCpG[0]/len(seq)*100 # Recuperation  de nombre de "CG" dans la sequence.
@@ -67,57 +56,13 @@ def resultat_ADN(des, seq, compo=-1, keys=-1):
 				plt_rapportCpG=False
 			resultatsfenetres=resultatsfenetres.replace(".",",") # On remplace les points par des virgules pour que les valeurs soient reconnus comme des nombres par Excel
 			fichier+=resultatsfenetres
-
-#-------Envoie du fichier au client-----------#
-		fichier=fichier.encode()
-		taille=str(len(fichier))
-		con.sendall(taille.encode())
-		rep=con.recv(255).decode()		   
-		if rep=="OK":
-			if int(taille)> 30000: # Si la taille du fichier à envoyer est supérieur à 30kb
-				if int(taille)% 30000 !=0 :
-					nb_file = (int(taille) // 30000) +1  # Nombre de fichiers à envoyer
-					con.sendall(str(nb_file).encode()) # Envoie du nombre de fichiers
-					rep=con.recv(255).decode()  # Confirmation de la réception
-					for i in range(0,nb_file-1): # Envoi par paquet de 30kb
-						fichier_c = fichier[i*30000:(i+1)*30000]
-						con.sendall(fichier_c)
-						rep=con.recv(255).decode() # Confirmation de la réception
-					last_file_size = int(taille) - ((int(taille) // 30000)*30000) # Taille du dernier block 
-					last_file_size =  str(last_file_size)
-					con.sendall(last_file_size.encode()) # Envoi de la taille 
-					rep=con.recv(255).decode() # Confirmation de la réception
-					last_file = fichier[((int(taille) // 30000)*30000) : int(taille)] # Envoi du dernier block
-					con.sendall(last_file)
-					rep=con.recv(255).decode()
-				else : # La taille des résultats est un multiple de 30000
-					nb_file = (int(taille) // 30000)   # Nombre de fichiers à envoyer
-					con.sendall(str(nb_file).encode()) # Envoie du nombre de fichiers
-					rep=con.recv(255).decode()  # Confirmation de la réception
-					for i in range(0,nb_file): # Envoi par paquet de 30kb
-						fichier_c = fichier[i*30000:(i+1)*30000]
-						con.sendall(fichier_c)
-						rep=con.recv(255).decode() # Confirmation de la réception
-
-			else :	
-				con.sendall(fichier)
-				rep=con.recv(255).decode()
-#---------------------------------------------#
+			error=""
+			type_error=0
  
 	else:
-#---------------Mise en reseau----------------#
-		con.sendall("---------------\nAttention : Execution incomplete du programme.\n\nSeule l'analyse sur la sequence entiere a pu etre effectuee.\nLes analyses par fenetre requierent une sequence de longueur minimum 200 nucleotides.\n---------------\n".encode())
-		con.recv(255).decode()
-#---------------------------------------------#
-		
-#-------Envoie du fichier au client-----------#
-		fichier=fichier.encode()
-		taille=str(len(fichier))
-		con.sendall(taille.encode())
-		rep=con.recv(255).decode()
-		if rep=="OK":
-			con.sendall(fichier)
-#---------------------------------------------#
+	  error="---------------\nAttention : Execution incomplete du programme.\n\nSeule l'analyse sur la sequence entiere a pu etre effectuee.\nLes analyses par fenetre requierent une sequence de longueur minimum 200 nucleotides.\n---------------\n"
+	  type_error=500
+	return(fichier, error, type_error)
 
 		
 
@@ -162,6 +107,9 @@ def resultat_prot(des,seq): # Permet d'obtenir les tableaux de resultats et les 
 		error="---------------\nAttention : Execution incomplete du programme.\n\nSeule l'analyse sur la sequence entiere a pu etre effectuee.\nLes analyses par fenetre requierent une sequence de longueur minimum 9 acides amines.\n---------------\n"
 		type_error=500
 	return(fichier, error, type_error)
+		
+		
+		
 		
 """
 def resultats_analyse_seq(addr): # Permet d'optenir les resultats de l'analyse d'une sequence ADN ou proteique sous forme de tableaux et de graphiques  

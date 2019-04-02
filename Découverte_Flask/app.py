@@ -28,7 +28,7 @@ def index(identifiant=None):
             abort(make_response(error, type_error))
         else:
             identifiant=ID
-            #return(fichier)
+            return(fichier)
     return render_template('index.html')
 
 
