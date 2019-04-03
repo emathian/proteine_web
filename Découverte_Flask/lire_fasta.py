@@ -7,18 +7,15 @@
 
 import urllib.request
 
-def lire_fasta(adresse): # Recupere une sequence dans un fichier au format fasta place dans le meme dossier que ce module grace au nom complet du fichier.
+def lire_fasta(fichier): # Recupere une sequence dans un fichier au format fasta place dans le meme dossier que ce module grace au nom complet du fichier.
     "Cette fonction permet de recuperer une sequence et sa description dans un fichier place dans le repertoire courant grace a son nom donne en argument (entre guillemets, sans oublier l'extension)."
     sequence=""
-    fasta=open(adresse,"r") # Permet d'ouvrir un fichier existant pour lire les informations qu'il contient.
-    ligne=fasta.readline() # Affecte a la variable ligne la premiere ligne de "fasta" sous forme de chaine de caratere.
-    while ligne[0] != ">": # Permet de recuperer la description de la sequence qui toujours est precedee de ">" au format fasta.
-        ligne=fasta.readline()
-    description=ligne[1:].strip()
-    while ligne != "": # Permet de recuperer la sequence et de s'arreter lorque la lecture a atteint la findu fichier.
-        ligne=fasta.readline().strip()
-        sequence+=ligne
-    fasta.close() # Permet de refermer le fichier "fasta" ouvert au debut de la fonction. 
+    lines=fichier.split("\n")
+    description=lines[0]
+    description=description[1:]
+    for line in lines[1:]:
+      line=line.strip() # Pour enlever d'éventuel espace en début ou fin de ligne
+      sequence+=line
     return(description,sequence)
 
 
