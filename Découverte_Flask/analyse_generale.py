@@ -5,7 +5,7 @@
 #                                                                     Projet Python 4BIM 2019
 #                                                             Analyse de sequences nucleiques et proteiques
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-
+import os 
 import lire_fasta as lf
 import analyse_sequence_fasta as asf
 import os
@@ -22,30 +22,35 @@ def choix(type_seq, graph, id_seq, fichier, loc):
     error=des
     type_error=seq
     return("",error,type_error)
-  if type_seq=="prot":
-    fichier,error,type_error=asf.resultat_prot(des,seq)
-    file_name = "Analyse_proteine_"+des
-  else:
-    fichier,error,type_error=asf.resultat_ADN(des,seq)
-    file_name = "Analyse_adn_"+des
   creation_repertoire(des)
-  creation_fichier(file_name)
-  
+  if type_seq=="prot":
+    file_name = "Analyse_proteine_"+des
+    nom_fichier, numero_fichier =creation_fichier(file_name)
+    fichier,error,type_error=asf.resultat_prot(des,seq, nom_fichier, numero_fichier)
+    
+  else:
+    file_name = "Analyse_adn_"+des
+    nom_fichier, numero_fichier = creation_fichier(file_name)
+    fichier,error,type_error=asf.resultat_ADN(des,seq, nom_fichier , numero_fichier)
+
+  os.chdir("./../..")
   return(fichier,error,type_error)
 
 
 
 def creation_repertoire(des):
-    """Cette fonnction permet de créer un répertoire pour contenir les fichiers des résultats. Le répertoire crée se nommera Analyse_(Descrition),
+	"""Cette fonnction permet de créer un répertoire pour contenir les fichiers des résultats. Le répertoire crée se nommera 		Analyse_(Descrition),
     la description est donnée en argument. Si le répertoire a déjà été crée lors d'une précédente analyse un Warning est envoyé à l'utilisateur.
     Il pourra faire le choix d'approfondir l'analyse de la séquence ou de lancer le programme sur une autre séquence."""
-    premiere_analyse=True
-    try:
-        os.mkdir("Analyse_"+des) # Permet de tester si le dossier '"Analyse_"+des' existe.
-    except FileExistsError:
-        premiere_analyse=False # Si le dossier existe deja alors l'analyse de la sequence entree existe deja, on ne souhaite pas la refaire inutilement.
-        print(" \nL'analyse de cette sequence a deja ete effectuee, vous pouvez \napprofondir cette analyse ou effectuer une annalyse sur une nouvelle sequence. \n")
-    os.chdir("./Analyse_"+des) # Si le dossier existe deja il n'est pas cree et on rentre simplement dedans, sinon il a deja ete creer dans le 'try' et donc on rentre dedans.
+	
+	os.chdir("./data")    
+	premiere_analyse=True
+	try:
+		os.mkdir("Analyse_"+des) # Permet de tester si le dossier '"Analyse_"+des' existe.
+	except FileExistsError:
+		premiere_analyse=False # Si le dossier existe deja alors l'analyse de la sequence entree existe deja, on ne souhaite pas la refaire inutilement.
+		print(" \nL'analyse de cette sequence a deja ete effectuee, vous pouvez \napprofondir cette analyse ou effectuer une annalyse sur une nouvelle sequence. \n")
+	os.chdir("./Analyse_"+des) # Si le dossier existe deja il n'est pas cree et on rentre simplement dedans, sinon il a deja ete creer dans le 'try' et donc on rentre dedans.
 
 
 

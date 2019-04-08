@@ -32,7 +32,6 @@ def index(identifiant=None):
             abort(make_response(error, type_error))
         else:
             identifiant=ID
-            existant_id =  find_ref(ID)
             return(fichier) # user= [username, gender, birth , wiki]
     return render_template('index.html')
 
