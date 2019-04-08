@@ -188,6 +188,10 @@ def choix(type_seq, graph, id_seq, fichier, loc):
     print("FICHIER:"+id_seq)
     print("DESCRIPTION:"+des)
     print("SEQUENCE:"+seq)
+  des = des.replace(" ", "")
+  des = des.replace(",", "_")
+  des = des.replace(".", "_")
+  des = des.replace("|", "_")
   if type(seq)==int:
     error=des
     type_error=seq
