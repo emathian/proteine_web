@@ -7,7 +7,7 @@ import analyse_generale as ag
 from flask import Flask
 from flask import abort, request, make_response
 from flask import render_template, redirect, url_for
-
+import json
 from data import USERS
 # Set API dev in an another file
 from api import SITE_API
@@ -31,7 +31,8 @@ def index(identifiant=None):
             abort(make_response(error, type_error))
         else:
             identifiant=ID
-            return(fichier)
+            existant_id =  find_ref(ID)
+            return(fichier) # user= [username, gender, birth , wiki]
     return render_template('index.html')
 
 
@@ -41,6 +42,13 @@ def about():
     return render_template('about.html', page_title="About")
 
 
+def find_ref(ID_search):
+    for item in REFS :
+        if item['ID'] ==  ID_search :
+            return True
+        else :
+            return False
+
 def find_user(user_name):
     for item in USERS : 
         if item['name'] == user_name :
@@ -48,6 +56,14 @@ def find_user(user_name):
             wiki   = item['wikipageid']
             gender = item['gender']
     return user_name ,gender, birth ,  wiki
+
+
+@app.route('/refs/', methods=['GET'])
+@app.route('/refs/<ID>/')
+def ref(ID=None):
+     if not ID:
+            return render_template('ref.html', refs=REFS)
+
 
 
 @app.route('/users/', methods=['GET', 'POST'])
