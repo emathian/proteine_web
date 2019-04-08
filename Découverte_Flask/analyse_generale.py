@@ -29,21 +29,8 @@ def analyse_graph(nom_fichier, numero_fichier):
     de lancer ou non ce module graphique. Cette fonction ouvre une fenêtre graphique qui sera complétée par analyse_graph_adn
     ou analyse_graph_prot selon la nature de la séquence.
     """
-    
-    if plt_dispo: # Pour permettre a l'utilisateur de choisir s'il veut creer des graphiques ou non seulement dans le cas ou le module matplotlib est disponible et donc la creation de graphiques possible.
-        plot_dispo=input(" \nSi vous souhaitez que le programme trace des graphiques en se basant \nsur l'analyse par fenetre (l'analyse sera plus longue), tapez 1 \nsinon, tapez 2 : \n\n>> ")
-        while plot_dispo!="1" and plot_dispo!="2":
-            print("\n---------------\nAttention : votre reponse ne correspond a aucune des propositions.\n\nVeuillez reconsiderer votre reponse.\n\nAttention : Relance du programme\n--------------\n")
-            plot_dispo=input(" \nSi vous souhaitez que le programme trace des graphiques en se basant \nsur l'analyse par fenetre (l'analyse sera plus longue), tapez 1 \nsinon, tapez 2 : \n\n>> ")
-        if plot_dispo=="1":
-            plot_dispo=True
-        else:
-            plot_dispo=False
-    else:
-        plot_dispo=False
-    if plot_dispo==-1: # Permet une utilisation plus generale pour laquelle l'utilisateur n'aurait pas a choisir s'il souhaite ou non tracer les graphiques.
-        plot_dispo=plt_dispo
-    if plot_dispo :
+
+    if plt_dispo : # Pour permettre a l'utilisateur de choisir s'il veut creer des graphiques ou non seulement dans le cas ou le module matplotlib est disponible et donc la creation de graphiques possible.
         file=open(nom_fichier+"(%i).txt" % numero_fichier,'r') # Ouverture du fichier resultat en mode lecture.
         line=file.readline()[:-1].split("\t") #[:-1] pour ne pas prendre le "\n" en fin de ligne.
         if "Analyse_seq_prot" in nom_fichier:
@@ -64,7 +51,7 @@ def analyse_graph(nom_fichier, numero_fichier):
         plt.ylabel('Nombre de nucleotides')
         plt.title('Composition de la sequence')
         file.close()
-    return(plot_dispo)
+    return(plt_dispo)
 
 
 def analyse_graph_adn(nom_fichier, numero_fichier):
@@ -140,9 +127,56 @@ def analyse_graph_adn(nom_fichier, numero_fichier):
                 numero_fichier+=1
                 nom_fichier=nom_fichier.replace("(%i)" % (numero_fichier-1),"(%i)" % numero_fichier) # Si le fichier "nom_fichier.png" existe on change de nom pour ne pas l'ecraser.
         plt.savefig(nom_fichier+"(%i).png" % numero_fichier,format='png')
-        plt.show()
     file.close()
+    
 
+def analyse_graph_prot(nom_fichier, numero_fichier):
+    """ Cette fonction permet de tracer le graphique de l'hydrophobicité local (hydrophobicité par fenêtre d'analyse), 
+    pour une protéine dont l'anlyse a déjà été réalisée. Cette fonction prend ainsi en argument le nom du répertoire et celui
+    du fichier des résultats.  Cette fonction requiert la librairie matplotlib. Le graphique sera présenté sur la même fenêtre 
+    que celle générée par analyse_graph, puis sera enregistré sous le format .png.  """
+
+    file=open(nom_fichier+"(%i).txt" % numero_fichier,'r') # Ouverture du fichier resultat en mode lecture.
+    line=file.readline()[:-1].split("\t")
+    line=file.readline()[:-1].split("\t")
+    line=file.readline()[:-1].split("\t")
+    line=file.readline()[:-1].split("\t")
+    line=file.readline()[:-1].split("\t")
+    if "Fenetres" in line : # Dans ce "if" recuperation et traitement des resultats par fenetre glissante de 9 acide amines.
+        num_fenetre=[]
+        hydrophobicite=[]
+        line=file.readline()[:-1].split("\t")
+        while line[0] != "":
+            num_fenetre.append(int(line[0]))
+            hydrophobicite.append(float(line[1].replace(",",".")))
+            line=file.readline()[:-1].split("\t")
+        plt.subplot(212)
+        plt.title("Hydrophobicite moyennes de chaque fenetre glissante de 9 acides amines de la sequence")
+        plt.grid()
+        plt.axhline(0, linestyle=':', color='k')
+        plt.plot(num_fenetre,hydrophobicite)
+        plt.xlabel("Numero des fenetres glissantes")
+        plt.ylabel("hydrophobicite (Echelle de Fauchere et Peliska)")
+        if max(hydrophobicite)>0:
+            plt.annotate("",xy=(0.5,0), xycoords='data',xytext=(0.5,max(hydrophobicite)), textcoords='data',arrowprops=dict(arrowstyle="<->",connectionstyle="arc3",color='r'), )
+            plt.text(-max(num_fenetre)/50,max(hydrophobicite)-0.2, "Partie hydrophobe", fontsize=8,color='r',rotation=85)
+        if min(hydrophobicite)<0:
+            plt.annotate("",xy=(0.5,0), xycoords='data',xytext=(0.5,min(hydrophobicite)), textcoords='data',arrowprops=dict(arrowstyle="<->",connectionstyle="arc3",color='b'), )
+            plt.text(-max(num_fenetre)/50,0, "Partie hydrophile", fontsize=8,color='b',rotation=85)
+        fichier_existe=True # Variable permettant de verifier que le fichier qu'on va creer n'en ecrase pas un preexistant.
+        numero_fichier=0
+        while fichier_existe: # Tant que le fichier "nom_fichier.png" existe le nom change.
+            try: 
+                sortie=open(nom_fichier+"(%i).png" % numero_fichier,'r') # Test si le fichier "nom.py" existe.
+            except FileNotFoundError: 
+                fichier_existe=False
+            else:
+                sortie.close()
+                numero_fichier+=1
+                nom_fichier=nom_fichier.replace("(%i)" % (numero_fichier-1),"(%i)" % numero_fichier) # Si le fichier "nom_fichier.png" existe on change de nom pour ne pas l'ecraser.
+        plt.savefig(nom_fichier+"(%i).png" % numero_fichier,format='png')
+    file.close()
+    
 
 
 def choix(type_seq, graph, id_seq, fichier, loc):
@@ -157,15 +191,20 @@ def choix(type_seq, graph, id_seq, fichier, loc):
     error=des
     type_error=seq
     return("",error,type_error)
+  creation_repertoire(des)
+  plt_dispo=analyse_graph(nom_fichier, numero_fichier)
   if type_seq=="prot":
     fichier,error,type_error=asf.resultat_prot(des,seq)
-	file_name = "Analyse_proteine_"+des
+    file_name = "Analyse_proteine_"+des
+    creation_fichier(file_name)
+    if plt_dispo:
+      analyse_graph_prot(nom_fichier, numero_fichier)
   else:
     fichier,error,type_error=asf.resultat_ADN(des,seq)
-	file_name = "Analyse_adn_"+des
-  creation_repertoire(des)
-  creation_fichier(file_name)
-  
+    file_name = "Analyse_adn_"+des
+    creation_fichier(file_name)
+    if plt_dispo:
+      analyse_graph_adn(nom_fichier, numero_fichier)
   return(fichier,error,type_error)
 
 
