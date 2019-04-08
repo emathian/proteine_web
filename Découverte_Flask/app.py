@@ -80,8 +80,9 @@ def analyses(nomdossier=None):
                 app.logger.debug(item)
                 texte.append(readfile("./data/{nomdossier}/{item}".format(nomdossier=nomdossier, item=item)))
             elif item.find(".png")>=0:
-                image.append(item)
-        #return render_template('analyses.html',analysis=[nomdossier, texte, image])
+                app.logger.debug(item)
+                image.append("./data/{nomdossier}/{image}".format(nomdossier=nomdossier, image=item))
+                #image.append(item)
         return render_template('analyses.html',analysis=texte, images=image)
 
 @app.route('/search/', methods=['GET'])
