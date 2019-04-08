@@ -22,7 +22,7 @@ _mkvenv () {
   _is_exe python3 || exit 1
   python3 -m venv "${VENV}"
   . "${VENV}/bin/activate"
-  pip install Flask
+  pip install Flask matplotlib
 }
 
 _get_jquery () {

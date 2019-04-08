@@ -19,6 +19,7 @@ app.register_blueprint(SITE_API)
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/<identifiant>')
 def index(identifiant=None):
+    # récupération des données d'entrée (séquence) et appel de la fonction d'analyse
     app.logger.debug('serving root URL /')
     if request.method == 'POST':
         type_seq = request.form["type"]
@@ -31,7 +32,6 @@ def index(identifiant=None):
             abort(make_response(error, type_error))
         else:
             identifiant=ID
-            existant_id =  find_ref(ID)
             return(fichier) # user= [username, gender, birth , wiki]
     return render_template('index.html')
 
@@ -67,7 +67,7 @@ def ref(ID=None):
 
 
 @app.route('/users/', methods=['GET', 'POST'])
-@app.route('/users/<username>/')
+@app.route('/users/<nom>/')
 def users(username=None):
     app.logger.debug('Client request: method:"{0.method}'.format(request))
     if request.method == 'POST':
