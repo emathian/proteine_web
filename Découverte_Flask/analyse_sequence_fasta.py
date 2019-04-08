@@ -12,7 +12,7 @@ import analyse_proteine as ap
 import creation_seq_aleatoires as csa
 
 
-def resultat_ADN(des, seq, compo=-1, keys=-1): 
+def resultat_ADN(des, seq, nom_fichier , numero_fichier, compo=-1, keys=-1  ): 
 	# Permet d'obtenir les tableaux de resultats et les graphiques correspondants de l'analyse de la sequence ADN.
 	"""Pour fonctionner, ce module fait appel a cinq autres modules qui doivent se trouver dans le meme repertoire courant que lui :
 	recuperation_sequence_fasta, lire_fasta, analyse_ADN, analyse_proteine, et creation_seq_aleatoires. Cette procedure permet d'effectuer
@@ -23,24 +23,26 @@ def resultat_ADN(des, seq, compo=-1, keys=-1):
 	description et la sequence correspondante au minimum. En troisieme argument elle prend la composition de la sequence (compo=) sous forme de 
 	dictionnaire, par defaut cette composition est calculee dans la procedure. De meme en quatrieme argument elle prend la liste des caracteres 
 	composants la sequence (keys=) (chacun ecrit entre guillemets), par defaut cette liste est calculee par la procedure."""
+	sortie=open(nom_fichier+"(%i).py" % numero_fichier,'a')	
 	compo=an.composition(seq)
 	keys=[]
 	for key in compo.keys():
 	  keys.append(key)
 
-	CG,pourcentCpG=an.contenu_C_et_G_et_nb_CpG(seq, con, comp=compo) # Recuperation du pourcentage de C+G dans la sequence.
+	CG,pourcentCpG=an.contenu_C_et_G_et_nb_CpG(seq,  comp=compo) # Recuperation du pourcentage de C+G dans la sequence.
 	pourcentCpG=pourcentCpG[0]/len(seq)*100 # Recuperation  de nombre de "CG" dans la sequence.
 	num_fenetre=[]
-	fichier="\tC+G(%)\tCpG(%)" # Redaction des entetes du tableau resultat consernant l'etude de la sequence entiere.
+	sortie.write("\tC+G(%)\tCpG(%)") # Redaction des entetes du tableau resultat consernant l'etude de la sequence entiere.
+
 	resultats="\n sequence entiere\t%.3f" % CG[0] + "\t%.3f" % pourcentCpG # Puis des resultats correspondants.
 	for ele in keys:
-		fichier+="\t%s"%(ele)
+		sortie.write("\t%s"%(ele))
 		resultats+="\t"+str(compo[str(ele)])
 		resultats=resultats.replace(".",",")
-	fichier+=resultats
+	sortie.write(resultats)
 	if len(seq)>=200: # Si la longueur de la sequence est inferieure a 200 nucleotides, cette partie de l'analyse n'a pas pu etre effectuee car elle necessite des fenetres glissantes de 200 nucleotides.
-		fichier+="\n \n \nFenetres\tC+G(%)\tCpG\tRapport CpG\tIlot CpG\n" # Redaction des entetes du tableau resultat consernant l'etude de la sequence par fenetres glissantes. 
-		rapportCpG,CpGfenetre,CGfenetre=an.rapport_CpG_nb_CpG_contenu_C_et_G(seq, con, 200)# Recuperation du porcentage de C+G dans chaque fenetre, du nombre de "CG" et du rapport CpG.
+		sortie.write("\n \n \nFenetres\tC+G(%)\tCpG\tRapport CpG\tIlot CpG\n" )# Redaction des entetes du tableau resultat consernant l'etude de la sequence par fenetres glissantes. 
+		rapportCpG,CpGfenetre,CGfenetre=an.rapport_CpG_nb_CpG_contenu_C_et_G(seq, 200)# Recuperation du porcentage de C+G dans chaque fenetre, du nombre de "CG" et du rapport CpG.
 		ilot_CpG=False
 		plt_rapportCpG=True
 		for i,ele in enumerate(CGfenetre): # On parcours l'une des liste de resultat de l'analyse par fenetre, elles ont toutes la meme taille.
@@ -55,19 +57,21 @@ def resultat_ADN(des, seq, compo=-1, keys=-1):
 				resultatsfenetres=str(i+1)+"\t%.3f" % CGfenetre[i] +"\t"+str(CpGfenetre[i])+"\t%s" % rapportCpG[i] +"\tNon\n"
 				plt_rapportCpG=False
 			resultatsfenetres=resultatsfenetres.replace(".",",") # On remplace les points par des virgules pour que les valeurs soient reconnus comme des nombres par Excel
-			fichier+=resultatsfenetres
+			sortie.write(resultatsfenetres)
 			error=""
 			type_error=0
  
 	else:
 	  error="---------------\nAttention : Execution incomplete du programme.\n\nSeule l'analyse sur la sequence entiere a pu etre effectuee.\nLes analyses par fenetre requierent une sequence de longueur minimum 200 nucleotides.\n---------------\n"
 	  type_error=500
+	sortie.close()
+	fichier = "ok :)"
 	return(fichier, error, type_error)
 
 		
 
 	
-def resultat_prot(des,seq): # Permet d'obtenir les tableaux de resultats et les graphiques correspondants de l'analyse de la sequence proteique. (Fonctionnement tres similaire a "resultat_ADN")
+def resultat_prot(des,seq, nom_fichier , numero_fichier): # Permet d'obtenir les tableaux de resultats et les graphiques correspondants de l'analyse de la sequence proteique. (Fonctionnement tres similaire a "resultat_ADN")
 	"""Pour fonctionner ce module fait appel a cinq autres modules qui doivent se trouver dans le meme repertoire courant que lui :
 	recuperation_sequence_fasta, lire_fasta, analyse_ADN, analyse_proteine, et creation_seq_aleatoires. Cette procedure permet d'effectuer
 	une etude de sequence proteique. Cette etude consiste en un calcul du nombre d'acide amines hydrophobe presents, du nombre d'acide 
