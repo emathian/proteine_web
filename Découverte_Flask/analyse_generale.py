@@ -8,6 +8,7 @@
 
 import lire_fasta as lf
 import analyse_sequence_fasta as asf
+import os
 
 def choix(type_seq, graph, id_seq, fichier, loc):
   if loc=="web":
@@ -23,10 +24,10 @@ def choix(type_seq, graph, id_seq, fichier, loc):
     return("",error,type_error)
   if type_seq=="prot":
     fichier,error,type_error=asf.resultat_prot(des,seq)
-	file_name = "Analyse_proteine_"+des
+    file_name = "Analyse_proteine_"+des
   else:
     fichier,error,type_error=asf.resultat_ADN(des,seq)
-	file_name = "Analyse_adn_"+des
+    file_name = "Analyse_adn_"+des
   creation_repertoire(des)
   creation_fichier(file_name)
   
