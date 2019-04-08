@@ -82,7 +82,7 @@ def resultat_prot(des,seq, nom_fichier , numero_fichier): # Permet d'obtenir les
 	de dictionnaire, par defaut cette composition est calculee dans la procedure. De meme en quatrieme argument elle prend la liste des caracteres 
 	composants la sequence (keys=) (chacun ecrit entre guillemets), par defaut cette liste est calculee par la procedure.""" 
 
- 
+	sortie=open(nom_fichier+"(%i).txt" % numero_fichier,'a')
 	compo=ap.composition(seq)
 	keys=[]
 	for key in compo.keys():
@@ -90,26 +90,28 @@ def resultat_prot(des,seq, nom_fichier , numero_fichier): # Permet d'obtenir les
 
 	nb_aa_hydrophobe,aa_charges,charge=ap.nb_residus_hydrophobes_et_residus_charges_et_chage_net(seq,compo) # Recuperation les resultats de l'etude de la sequence entiere.
 	num_fenetre=[]
-	fichier="\taa hydrophobes\taa charges (%)\tcharge net" # Redaction du tableau de resultat de l'etude sur la sequence entiere (sur cette ligne et les 5 suivantes).
-	resultats="\n sequence entiere\t"+str(nb_aa_hydrophobe)+"\t%.3f" % aa_charges +"\t"+str(charge)
+	sortie.write("\taa hydrophobes\taa charges (%)\tcharge net") # Redaction du tableau de resultat de l'etude sur la sequence entiere (sur cette ligne et les 5 suivantes).
+	resultats="\n sequence entiere\t"+str(nb_aa_hydrophobe)+"\t%.3f" % aa_charges +"\t%.3f" % charge
 	for ele in keys:
-		fichier+="\t%s"%ele
+		sortie.write("\t%s"%ele)
 		resultats+="\t"+str(compo[str(ele)])
 		resultats=resultats.replace(".",",")
-	fichier+=resultats
+	sortie.write(resultats)
 	if len(seq)>=9: # Dans ce "if" recuperation et traitement des resultats par fenetre glissante de 9 acide amines.
 		hydrophobicite=ap.hydrophobicite_moyenne(seq, 9)
-		fichier+="\n \n \nFenetres\thydrophobicite moyenne\n"
+		sortie.write("\n \n \nFenetres\thydrophobicite moyenne\n")
 		for i,ele in enumerate(hydrophobicite):
 			num_fenetre.append(i+1)
 			resultatsfenetres= str(i+1)+"\t%.3f" % hydrophobicite[i] +"\n"
 			resultatsfenetres=resultatsfenetres.replace(".",",") # On remplace les points par des virgules pour que les valeurs soient reconnus comme des nombres par Excel
-			fichier+=resultatsfenetres
+			sortie.write(resultatsfenetres)
 			error=""
 			type_error=0
 	else:
 		error="---------------\nAttention : Execution incomplete du programme.\n\nSeule l'analyse sur la sequence entiere a pu etre effectuee.\nLes analyses par fenetre requierent une sequence de longueur minimum 9 acides amines.\n---------------\n"
 		type_error=500
+	sortie.close()
+	fichier = "ok :)"
 	return(fichier, error, type_error)
 		
 		
