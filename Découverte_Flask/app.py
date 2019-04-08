@@ -76,11 +76,12 @@ def analyses(nomdossier=None):
         image=[] # liste contenant le lien vers les différents images
         for item in list_fichier:
             if item.find(".txt")>=0:
-                texte.append(readfile(item))
+                app.logger.debug(item)
+                texte.append(readfile("./data/{nomdossier}/{item}".format(nomdossier=nomdossier, item=item)))
             elif item.find(".png")>=0:
                 image.append(item)
         #return render_template('analyses.html',analysis=[nomdossier, texte, image])
-        return render_template('analyses.html',analysis=list_fichier)
+        return render_template('analyses.html',analysis=texte, images=image)
 
 @app.route('/search/', methods=['GET'])
 def search():
