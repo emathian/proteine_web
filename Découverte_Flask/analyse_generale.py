@@ -180,7 +180,7 @@ def analyse_graph_prot(nom_fichier, numero_fichier):
     
 
 
-def choix(type_seq, graph, id_seq, fichier, loc):
+def choix(type_seq, id_seq, fichier, loc): # choix(type_seq, graph, id_seq, fichier, loc): Si on veut remettre le bouton choix graph
   if loc=="web":
     des,seq=lf.recup_fasta_web(id_seq,type_seq)
   else :

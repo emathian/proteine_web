@@ -26,8 +26,8 @@ def index(identifiant=None):
         localisation = request.form["where"]
         ID =  request.form["id"]
         fichier =  request.form["seq"]
-        graph = request.form["choix"]
-        fichier,error,type_error=ag.choix(type_seq,graph,ID,fichier,localisation)
+        ##graph = request.form["choix"] # On l'a enlevé finalement
+        fichier,error,type_error=ag.choix(type_seq,ID,fichier,localisation) #(type_seq,graph,ID,fichier,localisation)
         if type_error!=0:
             abort(make_response(error, type_error))
         else:
