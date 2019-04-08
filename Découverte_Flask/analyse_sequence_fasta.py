@@ -91,7 +91,7 @@ def resultat_prot(des,seq, nom_fichier , numero_fichier): # Permet d'obtenir les
 	nb_aa_hydrophobe,aa_charges,charge=ap.nb_residus_hydrophobes_et_residus_charges_et_chage_net(seq,compo) # Recuperation les resultats de l'etude de la sequence entiere.
 	num_fenetre=[]
 	sortie.write("\taa hydrophobes\taa charges (%)\tcharge net") # Redaction du tableau de resultat de l'etude sur la sequence entiere (sur cette ligne et les 5 suivantes).
-	resultats="\n sequence entiere\t"+str(nb_aa_hydrophobe)+"\t%.3f" % aa_charges +"\t%.3f" % charge
+	resultats="\nsequence entiere\t"+str(nb_aa_hydrophobe)+"\t%.3f" % aa_charges +"\t%.3f" % charge
 	for ele in keys:
 		sortie.write("\t%s"%ele)
 		resultats+="\t"+str(compo[str(ele)])

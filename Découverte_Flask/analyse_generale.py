@@ -33,7 +33,7 @@ def analyse_graph(nom_fichier, numero_fichier):
 
     file=open(nom_fichier+"(%i).txt" % numero_fichier,'r') # Ouverture du fichier resultat en mode lecture.
     line=file.readline()[:-1].split("\t") #[:-1] pour ne pas prendre le "\n" en fin de ligne.
-    if "Analyse_seq_prot" in nom_fichier:
+    if "Analyse_proteine" in nom_fichier:
         keys=line[4:]
         line=file.readline()[:-1].split("\t") 
         valeurs=line[4:] # Pour recuperer la liste des elements qui composent la sequence proteique.
