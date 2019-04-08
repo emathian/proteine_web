@@ -10,6 +10,7 @@
 import os
 import lire_fasta as lf
 import analyse_sequence_fasta as asf
+
 # Pour pouvoir tracer les graphiques-----------------------------------------------------------------------------------------------------#
 try:
     import matplotlib.pyplot as plt # Permet de tester la presence du module matplotlib sur le poste.
@@ -203,12 +204,14 @@ def choix(type_seq, id_seq, fichier, loc): # choix(type_seq, graph, id_seq, fich
     fichier,error,type_error=asf.resultat_prot(des,seq, nom_fichier, numero_fichier)
     if plt_dispo:
       analyse_graph_prot(nom_fichier, numero_fichier)  
+
   else:
     file_name = "Analyse_adn_"+des
     nom_fichier, numero_fichier = creation_fichier(file_name)
     fichier,error,type_error=asf.resultat_ADN(des,seq, nom_fichier , numero_fichier)
     if plt_dispo:
       analyse_graph_adn(nom_fichier, numero_fichier)
+
   os.chdir("./../..")
   return(fichier,error,type_error)
 

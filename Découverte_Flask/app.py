@@ -4,6 +4,7 @@
 
 
 import analyse_generale as ag
+import os
 from flask import Flask
 from flask import abort, request, make_response
 from flask import render_template, redirect, url_for
@@ -49,14 +50,6 @@ def find_ref(ID_search):
         else :
             return False
 
-def find_user(user_name):
-    for item in USERS : 
-        if item['name'] == user_name :
-            birth = item['birth']
-            wiki   = item['wikipageid']
-            gender = item['gender']
-    return user_name ,gender, birth ,  wiki
-
 
 @app.route('/refs/', methods=['GET'])
 @app.route('/refs/<ID>/')
@@ -64,25 +57,32 @@ def ref(ID=None):
      if not ID:
             return render_template('ref.html', refs=REFS)
 
+def readfile(nomfichier):
+	text = open(nomfichier, 'r+')
+	content = text.read()
+	text.close()
+	return content
 
-
-@app.route('/users/', methods=['GET', 'POST'])
-@app.route('/users/<nom>/')
-def users(username=None):
+@app.route('/analyses/', methods=['GET', 'POST'])
+@app.route('/analyses/<nomdossier>/')
+def analyses(nomdossier=None):
+    """ Affiche la liste des analyses déjà effectuées ainsi que le contenu (fichier texte+images) des résultats des analyses """
     app.logger.debug('Client request: method:"{0.method}'.format(request))
-    if request.method == 'POST':
-        username = request.form["Name"]
-        birth =  request.form["Birth"]
-        gender = request.form["Gender"]
-        wikipedia_id  = request.form["Wikipedia_ID"] 
-        return render_template('users.html', user= [username, gender, birth , wiki])
-    else :
-        if not username:
-            return render_template('users.html', users=USERS)
-        else: 
-            username, gender, birth , wiki = find_user(username)
-            return render_template('users.html', user= [username, gender, birth , wiki])
-        
+    if not nomdossier:
+        list_dossier=os.listdir("./data/")
+        return render_template('analyses.html', repertories=list_dossier)
+    else: 
+        list_fichier=os.listdir("./data/{nomdossier}/".format(nomdossier=nomdossier))
+        texte=[] # liste contenant le contenu des différents fichiers texte
+        image=[] # liste contenant le lien vers les différents images
+        for item in list_fichier:
+            if item.find(".txt")>=0:
+                app.logger.debug(item)
+                texte.append(readfile("./data/{nomdossier}/{item}".format(nomdossier=nomdossier, item=item)))
+            elif item.find(".png")>=0:
+                image.append(item)
+        #return render_template('analyses.html',analysis=[nomdossier, texte, image])
+        return render_template('analyses.html',analysis=texte, images=image)
 
 @app.route('/search/', methods=['GET'])
 def search():
