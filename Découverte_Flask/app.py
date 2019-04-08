@@ -71,7 +71,7 @@ def analyses(nomdossier=None):
         list_dossier=os.listdir("./data/")
         return render_template('analyses.html', repertories=list_dossier)
     else: 
-        list_fichier=os.listdir("./data/nomdossier")
+        list_fichier=os.listdir("./data/{nomdossier}/".format(nomdossier=nomdossier))
         texte=[] # liste contenant le contenu des différents fichiers texte
         image=[] # liste contenant le lien vers les différents images
         for item in list_fichier:
@@ -79,8 +79,8 @@ def analyses(nomdossier=None):
                 texte.append(readfile(item))
             elif item.find(".png")>=0:
                 image.append(item)
-        return render_template('analyses.html', analysis= [nomdossier, texte, image])
-        
+        #return render_template('analyses.html',analysis=[nomdossier, texte, image])
+        return render_template('analyses.html',analysis=list_fichier)
 
 @app.route('/search/', methods=['GET'])
 def search():
