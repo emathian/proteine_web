@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+
+
 import analyse_generale as ag
 import os
 from flask import Flask
@@ -14,7 +16,6 @@ from api import SITE_API
 app = Flask(__name__)
 # Add the API
 app.register_blueprint(SITE_API)
-
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/<identifiant>')
