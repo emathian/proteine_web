@@ -22,7 +22,7 @@ _mkvenv () {
   _is_exe python3 || exit 1
   python3 -m venv "${VENV}"
   . "${VENV}/bin/activate"
-  pip install Flask
+  pip install Flask matplotlib
 }
 
 _get_jquery () {
@@ -53,6 +53,25 @@ serve () {
 
 python_shell () {
   python3 -ic"import app;print('Use exit() or Ctrl-D to exit')"
+}
+
+toggle () {
+  FILE_LIST="app.py api.py templates/users.html"
+  if ls *.py.dist 2>/dev/null 1>&2; then
+    echo setting dist files
+    for file in ${FILE_LIST};do # enseignant→dist
+      ls ${file}.dist >/dev/null || return 1
+      gpg --output ${file}.asc --encrypt --armor --recipient geoffroy.berret@azylum.org ${file}
+      mv ${file}.dist ${file}
+    done
+  else # dist→enseignant
+    echo setting solutions files
+    for file in ${FILE_LIST};do # enseignant→dist
+      ls ${file} >/dev/null || return 1
+      mv ${file} ${file}.dist
+      gpg -q --output ${file} --decrypt ${file}.asc
+    done
+  fi
 }
 
 if [ ! -e "${VENV}/bin/activate" ];then

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+      <h1 class="mt-5">Analyses</h1>
+     
+	  {% for item in repertories %}
+		  <li><a href='{{item}}'> {{item}} </a></li>
+    {% endfor %}
+		
+  	{% if images %}
+ 			{% for picture in images %}
+					<img src='{{picture}}' alt={{picture}} height=550em align="middle" />
+			{% endfor %}
+		{% endif %}
+   
+   
+		{% if analysis %}
+ 			{% for files in analysis %}
+					<p class="lead">{{files}}</p>
+			{% endfor %}
+		{% endif %}
+    
+    
+		
+
+	  		
+{% endblock %}
