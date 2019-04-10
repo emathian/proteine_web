@@ -22,6 +22,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/<identifiant>')
 def index(identifiant=None):
+    exist=False
     # récupération des données d'entrée (séquence) et appel de la fonction d'analyse
     app.logger.debug('serving root URL /')
     if request.method == 'POST':
@@ -30,7 +31,14 @@ def index(identifiant=None):
         ID =  request.form["id"]
         fichier =  request.form["seq"]
         ##graph = request.form["choix"] # On l'a enlevé finalement
-        fichier,error,type_error=ag.choix(type_seq,ID,fichier,localisation) #(type_seq,graph,ID,fichier,localisation)
+        liste_dossier=os.listdir("static/data/")
+        for file in liste_dossier :
+            if ID in file :
+                exist=True
+        if not exist :
+            fichier,error,type_error=ag.choix(type_seq,ID,fichier,localisation) #(type_seq,graph,ID,fichier,localisation)
+        else :
+            return render_template('index.html',error="L'analyse que vous souhaitez effectuer existe déjà dans notre base de donnée.\nRendez-vous sur la page Analyses pour la consulter ou demandez une autre analyse.")
         if type_error!=0:
             abort(make_response(error, type_error))
         else:
@@ -64,7 +72,7 @@ def readfile(nomfichier):
 	content = text.read()
 	text.close()
 	return content
-	
+
 
 def get_infos_analyse(nomdossier):
     list_fichier=os.listdir("static/data/{nomdossier}/".format(nomdossier=nomdossier))
@@ -89,7 +97,7 @@ def analyses(nomdossier=None):
     if not nomdossier:
         list_dossier=os.listdir("static/data/")
         return render_template('analyses.html', repertories=list_dossier)
-    else: 
+    else:
         image,texte=get_infos_analyse(nomdossier)
         return render_template('analyses.html',analysis=texte, images=image)
     return render_template("analyses.html")
@@ -100,25 +108,28 @@ def get_info_filtred_data(liste_dossier, pattern):
     filtered_data=[]
     exist=False
     for file_name in liste_dossier :
-        if re.match(pattern, file_name):
-            filtered_names.append(file_name)
-            exist=True
+        try:
+            if re.match(pattern, file_name):
+                filtered_data.append(file_name)
+                exist=True
+        except:
+            return render_template('analyses.html',error="Le pattern %s n'est pas une expression régulière correcte."%(pattern))
     if exist:
-        return render_template('analyses.html',filtre=filtered_data) 
+        return render_template('analyses.html',filtre=filtered_data)
     else:
         return render_template('analyses.html',error="Pas de nom d'analyse contenant %s."%(pattern))
-        
-        
+
+
 def get_info(liste_dossier, pattern):
     if pattern in liste_dossier:
-        image,texte=get_info_analyse(nomdossier)
-        return render_template('analyses.html',analysis=texte, images=image) 
+        image,texte=get_infos_analyse(pattern)
+        return render_template('analyses.html',analysis=texte, images=image)
     else:
-        return render_template('analyses.html',error="Pas de dossier d'analyse nommé %s."%(pattern)) 
+        return render_template('analyses.html',error="Pas de dossier d'analyse nommé %s."%(pattern))
         #abort(make_response('No user named %s'%(username), 501))
 
-        
-        
+
+
 @app.route('/search/', methods=['GET'])
 def search():
     app.logger.debug(request.args)
@@ -129,8 +140,8 @@ def search():
     else:
         liste_dossier=os.listdir("static/data/")
         return get_info(liste_dossier, pattern)
-  
-    
+
+
 
 
 # Script starts here

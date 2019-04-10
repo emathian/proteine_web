@@ -1,26 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-      <h1 class="mt-5">Analyses</h1>
-     
-	  {% for item in repertories %}
-		  <li><a href='{{item}}'> {{item}} </a></li>
-    {% endfor %}
-		
-  	{% if images %}
- 			{% for picture in images %}
-					<img src='{{picture}}' alt={{picture}} height=550em align="middle" />
-			{% endfor %}
-		{% endif %}
-   
-   
-		{% if analysis %}
- 			{% for files in analysis %}
-					<p class="lead">{{files}}</p>
-			{% endfor %}
-		{% endif %}
-    
-    
-		
 
-	  		
+    {% if error %}
+      <h1 class="mt-5">Erreur</h1>
+      <h2>{{error}}</h2>
+    {% elif filtre %}
+      <h1 class="mt-5">Analyses</h1>
+      {% for item in filtre %}
+        <li><a href='{{item}}'> {{item}} </a></li>
+      {% endfor %}
+    {% elif repertories %}
+      <h1 class="mt-5">Analyses</h1>
+  	  {% for item in repertories %}
+  		  <li><a href='{{item}}'> {{item}} </a></li>
+      {% endfor %}
+    {% else %}
+    	{% if images %}
+        <h1 class="mt-5">Resultats d'analyse</h1>
+   			{% for picture in images %}
+  					<img src='{{picture}}' alt={{picture}} height=550em align="middle" />
+  			{% endfor %}
+  		{% endif %}
+  		{% if analysis %}
+   			{% for files in analysis %}
+  					<p class="lead">{{files}}</p>
+  			{% endfor %}
+  		{% endif %}
+    {% endif %}
+
 {% endblock %}
