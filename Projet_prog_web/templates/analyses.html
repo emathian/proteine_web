@@ -3,12 +3,10 @@
 
     {% if error %}
       <h1 class="mt-5">Erreur</h1>
+      {% if type_error %}
+        <h2>{{type_error}}</h2>
+      {% endif %}
       <h2>{{error}}</h2>
-    {% elif filtre %}
-      <h1 class="mt-5">Analyses</h1>
-      {% for item in filtre %}
-        <li><a href='{{item}}'> {{item}} </a></li>
-      {% endfor %}
     {% elif repertories %}
       <h1 class="mt-5">Analyses</h1>
   	  {% for item in repertories %}

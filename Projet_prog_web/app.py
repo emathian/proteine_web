@@ -36,14 +36,17 @@ def index(identifiant=None):
             if ID in file :
                 exist=True
         if not exist :
-            fichier,error,type_error=ag.choix(type_seq,ID,fichier,localisation) #(type_seq,graph,ID,fichier,localisation)
+            nom_dossier,error,type_error=ag.choix(type_seq,ID,fichier,localisation) #(type_seq,graph,ID,fichier,localisation)
+            if type_error!=0:
+                #abort(make_response(error, type_error))
+                return render_template('index.html',error=error,type_error=type_error)
+            else:
+                identifiant=ID
+                os.chdir("./..")
+                image,texte=get_infos_analyse(nom_dossier)
+                return render_template('analyses.html',analysis=texte, images=image)
         else :
             return render_template('index.html',error="L'analyse que vous souhaitez effectuer existe déjà dans notre base de donnée.\nRendez-vous sur la page Analyses pour la consulter ou demandez une autre analyse.")
-        if type_error!=0:
-            abort(make_response(error, type_error))
-        else:
-            identifiant=ID
-            return render_template('analyses.html') # user= [username, gender, birth , wiki]
     return render_template('index.html')
 
 
@@ -91,12 +94,15 @@ def get_infos_analyse(nomdossier):
 
 @app.route('/analyses/')#, methods=['GET', 'POST'])
 @app.route('/analyses/<nomdossier>/')
-def analyses(nomdossier=None):
+def analyses(nomdossier=None,filtred_data=None):
     """ Affiche la liste des analyses déjà effectuées ainsi que le contenu (fichier texte+images) des résultats des analyses """
     app.logger.debug('Client request: method:"{0.method}'.format(request))
     if not nomdossier:
-        list_dossier=os.listdir("static/data/")
-        return render_template('analyses.html', repertories=list_dossier)
+        if filtred_data:
+            return render_template('analyses.html', repertories=filtred_data)
+        else:
+            list_dossier=os.listdir("static/data/")
+            return render_template('analyses.html', repertories=list_dossier)
     else:
         image,texte=get_infos_analyse(nomdossier)
         return render_template('analyses.html',analysis=texte, images=image)
@@ -115,7 +121,7 @@ def get_info_filtred_data(liste_dossier, pattern):
         except:
             return render_template('analyses.html',error="Le pattern %s n'est pas une expression régulière correcte."%(pattern))
     if exist:
-        return render_template('analyses.html',filtre=filtered_data)
+        return(analyses(filtred_data=filtered_data))
     else:
         return render_template('analyses.html',error="Pas de nom d'analyse contenant %s."%(pattern))
 
@@ -131,15 +137,21 @@ def get_info(liste_dossier, pattern):
 
 
 @app.route('/search/', methods=['GET'])
-def search():
+@app.route('/search/<nomdossier>/')
+def search(nomdossier=None):
     app.logger.debug(request.args)
-    pattern=request.args["pattern"]
-    if "regexp" in request.args:
-        liste_dossier=os.listdir("static/data/")
-        return get_info_filtred_data(liste_dossier, pattern)
+    if not nomdossier:
+        pattern=request.args["pattern"]
+        if "regexp" in request.args:
+            liste_dossier=os.listdir("static/data/")
+            return get_info_filtred_data(liste_dossier, pattern)
+        else:
+            liste_dossier=os.listdir("static/data/")
+            return get_info(liste_dossier, pattern)
     else:
-        liste_dossier=os.listdir("static/data/")
-        return get_info(liste_dossier, pattern)
+        image,texte=get_infos_analyse(nomdossier)
+        return render_template('analyses.html',analysis=texte, images=image)
+
 
 
 

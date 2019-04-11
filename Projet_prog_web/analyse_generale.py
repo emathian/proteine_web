@@ -13,6 +13,8 @@ import analyse_sequence_fasta as asf
 
 # Pour pouvoir tracer les graphiques-----------------------------------------------------------------------------------------------------#
 try:
+    import matplotlib
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt # Permet de tester la presence du module matplotlib sur le poste.
 except ImportError:
     print("---------------\nAttention : Votre poste de travail n'est pas equipe du module matplotlib,\npar consequent le programme ne pourra pas generer de resultats graphiques\nseuls les tableaux de resultats seront generes.\n---------------")
@@ -26,8 +28,8 @@ else:
 
 def analyse_graph(nom_fichier, numero_fichier):
     """ Cette fonction permet de tracer un histogramme représentant la composition d'une séquence nucléique ou protéique,
-    dont l'analyse a déjà été effectuée. Ainsi cette fonction prend en argument le nom du répertoire et celui du fichiers des 
-    résultats. Cette analyse requiert le module matplotlib.  Si cette librairie est installée, l'utilisateur pourra choisir 
+    dont l'analyse a déjà été effectuée. Ainsi cette fonction prend en argument le nom du répertoire et celui du fichiers des
+    résultats. Cette analyse requiert le module matplotlib.  Si cette librairie est installée, l'utilisateur pourra choisir
     de lancer ou non ce module graphique. Cette fonction ouvre une fenêtre graphique qui sera complétée par analyse_graph_adn
     ou analyse_graph_prot selon la nature de la séquence.
     """
@@ -36,11 +38,11 @@ def analyse_graph(nom_fichier, numero_fichier):
     line=file.readline()[:-1].split("\t") #[:-1] pour ne pas prendre le "\n" en fin de ligne.
     if "Analyse_proteine" in nom_fichier:
         keys=line[4:]
-        line=file.readline()[:-1].split("\t") 
+        line=file.readline()[:-1].split("\t")
         valeurs=line[4:] # Pour recuperer la liste des elements qui composent la sequence proteique.
     else :
         keys=line[3:]
-        line=file.readline()[:-1].split("\t") 
+        line=file.readline()[:-1].split("\t")
         valeurs=line[3:] # Pour recuperer la liste des elements qui composent la sequence nucleique.
     valeurs=[int(i) for i in valeurs]
     objets = np.arange(len(valeurs))
@@ -55,11 +57,11 @@ def analyse_graph(nom_fichier, numero_fichier):
 
 
 def analyse_graph_adn(nom_fichier, numero_fichier):
-    """ Cette fonction permet de tracer les graphiques des rapport CpG et des pourcentages C+G locaux (calculés par fenêtre d'analyse), 
+    """ Cette fonction permet de tracer les graphiques des rapport CpG et des pourcentages C+G locaux (calculés par fenêtre d'analyse),
     pour une séquence d'ADN dont l'anlyse a déjà été réalisée. Cette fonction prend ainsi en argument le nom du répertoire et celui
-    du fichier des résultats.  Cette fonction requiert la librairie matplotlib. Les graphiques seront présentés sur la même fenêtre 
+    du fichier des résultats.  Cette fonction requiert la librairie matplotlib. Les graphiques seront présentés sur la même fenêtre
     que celle générée par analyse_graph, puis sera enregistré sous le format .png.  """
-    
+
     analyse_graph(nom_fichier, numero_fichier)
     file=open(nom_fichier+"(%i).txt" % numero_fichier,'r') # Ouverture du fichier resultat en mode lecture.
     line=file.readline()[:-1].split("\t")
@@ -119,9 +121,9 @@ def analyse_graph_adn(nom_fichier, numero_fichier):
         fichier_existe=True # Variable permettant de verifier que le fichier qu'on va creer n'en ecrase pas un preexistant.
         numero_fichier=0
         while fichier_existe: # Tant que le fichier "nom_fichier.png" existe le nom change.
-            try: 
+            try:
                 sortie=open(nom_fichier+"(%i).png" % numero_fichier,'r') # Test si le fichier "nom_fichier.txt" existe.
-            except FileNotFoundError: 
+            except FileNotFoundError:
                 fichier_existe=False
             else:
                 sortie.close()
@@ -129,14 +131,14 @@ def analyse_graph_adn(nom_fichier, numero_fichier):
                 nom_fichier=nom_fichier.replace("(%i)" % (numero_fichier-1),"(%i)" % numero_fichier) # Si le fichier "nom_fichier.png" existe on change de nom pour ne pas l'ecraser.
         plt.savefig(nom_fichier+"(%i).png" % numero_fichier,format='png')
     file.close()
-    
+
 
 def analyse_graph_prot(nom_fichier, numero_fichier):
-    """ Cette fonction permet de tracer le graphique de l'hydrophobicité local (hydrophobicité par fenêtre d'analyse), 
+    """ Cette fonction permet de tracer le graphique de l'hydrophobicité local (hydrophobicité par fenêtre d'analyse),
     pour une protéine dont l'anlyse a déjà été réalisée. Cette fonction prend ainsi en argument le nom du répertoire et celui
-    du fichier des résultats.  Cette fonction requiert la librairie matplotlib. Le graphique sera présenté sur la même fenêtre 
+    du fichier des résultats.  Cette fonction requiert la librairie matplotlib. Le graphique sera présenté sur la même fenêtre
     que celle générée par analyse_graph, puis sera enregistré sous le format .png.  """
-  
+
     analyse_graph(nom_fichier, numero_fichier)
     file=open(nom_fichier+"(%i).txt" % numero_fichier,'r') # Ouverture du fichier resultat en mode lecture.
     line=file.readline()[:-1].split("\t")
@@ -168,9 +170,9 @@ def analyse_graph_prot(nom_fichier, numero_fichier):
         fichier_existe=True # Variable permettant de verifier que le fichier qu'on va creer n'en ecrase pas un preexistant.
         numero_fichier=0
         while fichier_existe: # Tant que le fichier "nom_fichier.png" existe le nom change.
-            try: 
+            try:
                 sortie=open(nom_fichier+"(%i).png" % numero_fichier,'r') # Test si le fichier "nom.txt" existe.
-            except FileNotFoundError: 
+            except FileNotFoundError:
                 fichier_existe=False
             else:
                 sortie.close()
@@ -178,7 +180,7 @@ def analyse_graph_prot(nom_fichier, numero_fichier):
                 nom_fichier=nom_fichier.replace("(%i)" % (numero_fichier-1),"(%i)" % numero_fichier) # Si le fichier "nom_fichier.png" existe on change de nom pour ne pas l'ecraser.
         plt.savefig(nom_fichier+"(%i).png" % numero_fichier,format='png')
     file.close()
-    
+
 
 
 def choix(type_seq, id_seq, fichier, loc): # choix(type_seq, graph, id_seq, fichier, loc): Si on veut remettre le bouton choix graph
@@ -197,40 +199,49 @@ def choix(type_seq, id_seq, fichier, loc): # choix(type_seq, graph, id_seq, fich
     error=des
     type_error=seq
     return("",error,type_error)
-  creation_repertoire(des)
   if type_seq=="prot":
+    nom_dossier=creation_repertoire(des,type_seq)
     file_name = "Analyse_proteine_"+des
     nom_fichier, numero_fichier =creation_fichier(file_name)
     fichier,error,type_error=asf.resultat_prot(des,seq, nom_fichier, numero_fichier)
     if plt_dispo:
-      analyse_graph_prot(nom_fichier, numero_fichier)  
-
+      analyse_graph_prot(nom_fichier, numero_fichier)
   else:
+    nom_dossier=creation_repertoire(des,type_seq)
     file_name = "Analyse_adn_"+des
     nom_fichier, numero_fichier = creation_fichier(file_name)
     fichier,error,type_error=asf.resultat_ADN(des,seq, nom_fichier , numero_fichier)
     if plt_dispo:
       analyse_graph_adn(nom_fichier, numero_fichier)
-
   os.chdir("./../..")
-  return(fichier,error,type_error)
+  return(nom_dossier,error,type_error)
 
 
 
-def creation_repertoire(des):
-	"""Cette fonnction permet de créer un répertoire pour contenir les fichiers des résultats. Le répertoire crée se nommera 		Analyse_(Descrition),
+def creation_repertoire(des,type_seq):
+    """Cette fonnction permet de créer un répertoire pour contenir les fichiers des résultats. Le répertoire crée se nommera Analyse_(Descrition),
     la description est donnée en argument. Si le répertoire a déjà été crée lors d'une précédente analyse un Warning est envoyé à l'utilisateur.
     Il pourra faire le choix d'approfondir l'analyse de la séquence ou de lancer le programme sur une autre séquence."""
-	
-	os.chdir("./static/data")    
-	premiere_analyse=True
-	try:
-		os.mkdir("Analyse_"+des) # Permet de tester si le dossier '"Analyse_"+des' existe.
-	except FileExistsError:
-		premiere_analyse=False # Si le dossier existe deja alors l'analyse de la sequence entree existe deja, on ne souhaite pas la refaire inutilement.
-		print(" \nL'analyse de cette sequence a deja ete effectuee, vous pouvez \napprofondir cette analyse ou effectuer une annalyse sur une nouvelle sequence. \n")
-	os.chdir("./Analyse_"+des) # Si le dossier existe deja il n'est pas cree et on rentre simplement dedans, sinon il a deja ete creer dans le 'try' et donc on rentre dedans.
-
+    os.chdir("./static/data")
+    #premiere_analyse=True
+    if type_seq=="prot":
+        #try:
+        #	os.mkdir("Analyse_proteine_"+des) # Permet de tester si le dossier '"Analyse_"+des' existe.
+        #except FileExistsError:
+        #	premiere_analyse=False # Si le dossier existe deja alors l'analyse de la sequence entree existe deja, on ne souhaite pas la refaire inutilement.
+        #	print(" \nL'analyse de cette sequence a deja ete effectuee, vous pouvez \napprofondir cette analyse ou effectuer une annalyse sur une nouvelle sequence. \n")
+        os.mkdir("Analyse_proteine_"+des)
+        os.chdir("./Analyse_proteine_"+des) # Si le dossier existe deja il n'est pas cree et on rentre simplement dedans, sinon il a deja ete creer dans le 'try' et donc on rentre dedans.
+        return("Analyse_proteine_"+des)
+    else:
+        #try:
+        #	os.mkdir("Analyse_adn_"+des) # Permet de tester si le dossier '"Analyse_"+des' existe.
+        #except FileExistsError:
+        #	premiere_analyse=False # Si le dossier existe deja alors l'analyse de la sequence entree existe deja, on ne souhaite pas la refaire inutilement.
+        #	print(" \nL'analyse de cette sequence a deja ete effectuee, vous pouvez \napprofondir cette analyse ou effectuer une annalyse sur une nouvelle sequence. \n")
+        os.mkdir("Analyse_adn_"+des)
+        os.chdir("./Analyse_adn_"+des) # Si le dossier existe deja il n'est pas cree et on rentre simplement dedans, sinon il a deja ete creer dans le 'try' et donc on rentre dedans.
+        return("Analyse_adn_"+des)
 
 
 def creation_fichier(nom_fichier) :
@@ -248,9 +259,5 @@ def creation_fichier(nom_fichier) :
         else:
             sortie.close()
             numero_fichier+=1
-            nom_fichier=nom_fichier.replace("(%i)" % (numero_fichier-1),"(%i)" % numero_fichier)  
+            nom_fichier=nom_fichier.replace("(%i)" % (numero_fichier-1),"(%i)" % numero_fichier)
     return(nom_fichier, numero_fichier)
-
-
-
-
