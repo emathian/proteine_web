@@ -203,6 +203,7 @@ def choix(type_seq, id_seq, fichier, loc): # choix(type_seq, graph, id_seq, fich
   des=des.replace("\\","")
   if type_seq=="prot":
     nom_dossier=creation_repertoire(des,type_seq)
+    nom_dossier=nom_dossier.replace("\n","")
     file_name = "Analyse_proteine_"+des
     nom_fichier, numero_fichier =creation_fichier(file_name)
     fichier,error,type_error=asf.resultat_prot(des,seq, nom_fichier, numero_fichier)
@@ -210,6 +211,7 @@ def choix(type_seq, id_seq, fichier, loc): # choix(type_seq, graph, id_seq, fich
       analyse_graph_prot(nom_fichier, numero_fichier)
   else:
     nom_dossier=creation_repertoire(des,type_seq)
+    nom_dossier=nom_dossier.replace("\n","")
     file_name = "Analyse_adn_"+des
     nom_fichier, numero_fichier = creation_fichier(file_name)
     fichier,error,type_error=asf.resultat_ADN(des,seq, nom_fichier , numero_fichier)
@@ -226,19 +228,24 @@ def creation_repertoire(des,type_seq):
     Il pourra faire le choix d'approfondir l'analyse de la séquence ou de lancer le programme sur une autre séquence."""
     os.chdir("./static/data")
     if type_seq=="prot":
-        os.mkdir("Analyse_proteine_"+des)
-        os.chdir("./Analyse_proteine_"+des)
-        return("Analyse_proteine_"+des)
+        name=("Analyse_proteine_"+des).replace("\n","")
+        name=name.strip()
+        os.mkdir(name)
+        os.chdir("./"+name)
+        return(name)
     else:
-        os.mkdir("Analyse_adn_"+des)
-        os.chdir("./Analyse_adn_"+des)
-        return("Analyse_adn_"+des)
+        name=("Analyse_adn_"+des).replace("\n","")
+        name=name.strip()
+        os.mkdir(name)
+        os.chdir("./"+name)
+        return(name)
 
 
 def creation_fichier(nom_fichier) :
     """Cette fonction permet de créer les fichiers textes contenant les résultats. Cette fonction prévient la redondance des fichiers,
     ainsi le nom de chaque fichier est unique. """
 
+    nom_fichier=nom_fichier.strip()
     nom_fichier=nom_fichier.replace("\n","")
     fichier_existe=True # Variable permettant de verifier que le fichier qu'on va creer n'en ecrase pas un preexistant.
     numero_fichier=0

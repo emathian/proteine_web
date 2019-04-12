@@ -26,8 +26,16 @@ def index(identifiant=None):
         ID =  request.form["id"]
         fichier =  request.form["seq"]
         liste_dossier=os.listdir("static/data/")
+        if ID=="":
+            des=fichier.split("\n")[0]
+            if type_seq=="prot":
+                name="Analyse_proteine_"+des[1:]
+            else:
+                name="Analyse_adn_"+des[1:]
+        else:
+            name=ID
         for file in liste_dossier :
-            if ID in file :
+            if name in file :
                 exist=True
         if not exist :
             nom_dossier,error,type_error=ag.choix(type_seq,ID,fichier,localisation)
