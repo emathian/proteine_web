@@ -142,6 +142,7 @@ def search(nomdossier=None):
     app.logger.debug(request.args)
     if not nomdossier:
         pattern=request.args["pattern"]
+        pattern=pattern.strip()
         if "regexp" in request.args:
             liste_dossier=os.listdir("static/data/")
             return get_info_filtred_data(liste_dossier, pattern)
