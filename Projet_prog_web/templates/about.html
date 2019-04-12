@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
 
-      <h1 class="mt-5">About page Lorem ipsum</h1>
-      <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Phasellus imperdiet odio sit amet turpis ultricies, sit amet facilisis
-      ligula volutpat. Nullam laoreet diam non arcu aliquet condimentum.
-      Phasellus interdum non purus non ullamcorper. Mauris nec semper libero.
-      Quisque mauris eros, ultrices vel posuere eget, mollis et mi. Morbi
-      ullamcorper quam id metus laoreet vestibulum. Quisque turpis tortor,
-      tempor ac vestibulum vitae, facilisis ut libero. Morbi vestibulum a
-      sapien sed sodales. In scelerisque accumsan mauris, nec finibus ipsum
-      malesuada nec. Vivamus nulla mauris, malesuada ut velit a, dapibus
-      elementum urna. Nunc non sapien a erat porta rutrum. Nunc sed consectetur
-      est. Vestibulum fringilla blandit nisi, id vulputate eros dictum vel. Ut
-      urna sapien, sodales ac varius quis, consequat in arcu. Ut ac est quam.
-      Mauris at aliquet risus, ut hendrerit eros.</p>
+      <h1 class="mt-5">A propos</h1>
+			<h2 class="mt-5">Projet Réseau S2 4BIM INSA Lyon, Louise Gsell, Hanâ Lbath, Emilie Mathian</h2> 
+			<h3 class="mt-5">Objectif de ce site web</h3>    
+			<p class="lead">
+Il permet d’analyser des séquences protéiques ou nucléiques (ADN) au format fasta. En ce qui concerne l'analyse de séquences nucléiques, ce site permet de connaître la composition de la séquence, le pourcentage de C+G et le nombre d'îlot CpG. En ce qui concerne les séquences protéiques, on peut calculer le nombre de résidus hydrophobes, le pourcentage de résidus chargés et la charge nette de la séquence.
+
+			<h3 class="mt-5">Fonctionnement de ce site web</h3> 
+			<p class="lead">
+Il peut gérer aussi bien des fichiers fasta stockés sur la machine que des fiches fasta en ligne. 
+Lors de son fonctionnement, il récupère la séquence fasta souhaitée et crée des fichiers résultats tabulés (fichiers « .txt ») pouvant être ouvert en .txt ou avec un tableur comme Excel. Il crée également dans ce dossier des graphiques (fichiers « .png ») si l’utilisateur le souhaite, en se basant sur son analyse (à condition que la machine soit équipée du module matplotlib, dans le cas contraire il ne crée que les fichiers tabulés). Ces données sont créées de manière automatique et sont classées dans un dossier portant comme nom « Analyse_ » suivit de la description de la séquence étudiée. Ce dossier sera automatiquement exporté dans le répertoire courant (celui où se trouve le script).
+Ce script offre la possibilité d’approfondir l’analyse en la répétant sur une ou plusieurs séquences aléatoires de même longueur et de même type que la séquence de référence et/ou sur une ou plusieurs séquences aléatoires de même composition. Si l’utilisateur fait le choix d’effectuer un ou plusieurs des approfondissements préalablement cités, tous les fichiers et graphiques générés au cours de ces approfondissements seront classés dans le même dossier que la séquence de référence. Toutes les précautions nécessaires sont prises lors de la création des résultats par le script pour ne pas écraser d’éventuels résultats préexistants. 
+Lors de chaque analyse le graphique créé s’affiche automatiquement, il n’est pas nécessaire de l’enregistrer il se trouve d’ores et déjà dans le dossier approprié. Cette fenêtre surgissante est simplement là pour donner un aperçu des résultats établis, et ainsi aider l’utilisateur à décider s’il souhaite approfondir ou non son étude. L’apparition de cette fenêtre interrompt le programme, pour continuer il suffit de la fermer.
+
+</p>
         
 {% endblock %}
 
