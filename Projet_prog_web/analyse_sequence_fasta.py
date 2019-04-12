@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-#																Projet Réseaux 4BIM
+#																Projet Prog web 4BIM
 #															 Analyse de sequences fasta
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 #Import de modules locaux :
 import analyse_ADN as an
 import analyse_proteine as ap
-import creation_seq_aleatoires as csa
 
 
 def resultat_ADN(des, seq, nom_fichier , numero_fichier, compo=-1, keys=-1  ): 
@@ -115,101 +114,4 @@ def resultat_prot(des,seq, nom_fichier , numero_fichier): # Permet d'obtenir les
 	return(fichier, error, type_error)
 		
 		
-		
-		
-"""
-def resultats_analyse_seq(addr): # Permet d'optenir les resultats de l'analyse d'une sequence ADN ou proteique sous forme de tableaux et de graphiques  
-	reponse="Initialisation" # Condition utile pour commencer l'etude d'une nouvelle fonction.
-	type_seq=""
-	premiere_analyse=True # variable servant a ne pas refaire l'analyse d'une sequence deja effectuee.
-	while reponse!="4":
-		keys=[]
-		valeurs=[]
-		if type_seq=="": # Seulement si c'est la premiere analyse ou que l'utilisateur a demande a en commencer une nouvelle.
-			des,seq,type_seq=rs.entree(addr)
-			des=des.replace(",","_") # Ensemble de commande permettant de creer un nom de fichier sans caracteres compromettants.
-			des=des.replace(".","")
-			des=des.replace(" ","_")
-			des=des.replace("\\","")
-			des=des.replace("/","")
-			des=des.replace("|","_")
-			
-#--------------Mise en reseau-----------------#
-			con.sendall(("creation dossier:%s"%des).encode())
-			premiere_analyse=con.recv(255).decode()
-			premiere_analyse=premiere_analyse=="True"
-			con.sendall("OK".encode())
-#--------------------------------------------#
-			
-			sequence=seq # Permet de garder en memoire la sequence de reference de chaque analyse dans la variable 'seq'.
-			description=""
-		elif type_seq!="":
-			if reponse=="Initialisation":
-				if premiere_analyse: # Si une analyse identique a deja ete effectuee on ne la refait pas.
-					seq=ap.code3aa1(sequence) # Permet de passer du code d'acide amines 3 lettres au code 1 lettre si besoin (si 'sequence' est nucleotidique ou deja en code 1 lettre rien ne change.)
-					compo=ap.composition(sequence)
-					for key in compo.keys():
-						keys.append(key)
-						valeurs.append(compo[str(key)])
-					if type_seq=="prot":
-						
-#--------------Mise en reseau-----------------#
-						con.sendall("resultat_prot".encode()) # mot clé pour lancer l'ecriture du fichier resultat chez le client
-						rep=con.recv(255).decode()
-#---------------------------------------------#
-						
-						resultat_prot(des+description,sequence,compo,keys,con)
-					else :
-
-#--------------Mise en reseau-----------------#
-						con.sendall("resultat_adn".encode()) # mot clé pour lancer l'ecriture du fichier resultat chez le client
-						rep=con.recv(255).decode()
-#---------------------------------------------#
-						
-						resultat_ADN(des+description,sequence, con ,compo,keys)
-			elif reponse=="1":
-				reponse="Initialisation" # Permet de repartir dans la condition menant a l'analyse de la sequence.
-				type_seq=""
-
-#--------------Mise en reseau-----------------#
-				con.sendall("nouvelle analyse".encode())
-				rep=con.recv(255).decode()
-#---------------------------------------------#
-				
-				premiere_analyse=True # On va passer a une nouvelle analyse on reinitialise donc la variable premiere_analyse.
-				continue # Permet de passer au tour de boucle while suivant, pour retester les conditions sur la variable "reponse".
-			elif reponse=="2":
-				reponse="Initialisation"
-				seq_meme_compo=csa.seq_meme_compo(seq) # Recupere une sequence de meme composition que "seq".
-				description="_seq_meme_compo"
-				sequence=seq_meme_compo # Ecrase "sequence" mais pas "seq" ce qui permet de garder en memoire la sequence de reference de chaque analyse dans la variable 'seq'.
-				premiere_analyse=True # Pour les sequences aleatoire, la sequence change a chaque fois donc l'analyse est toujours nouvelle.
-				continue
-			elif reponse=="3":
-				reponse="Initialisation"
-				compo=ap.composition(seq)
-				seq_al=csa.seq_aleatoire(seq,compo) # Recupere une sequence de composition aleatoire de meme type et de meme longueur que "seq".
-				description="_seq_aleatoire"
-				sequence=seq_al # Ecrase "sequence" mais pas "seq" ce qui permet de garder en memoire la sequence de reference de chaque analyse dans la variable 'seq'
-				premiere_analyse=True
-				continue
-			else :
-
-#--------------Mise en reseau-----------------#
-				con.sendall("\n---------------\nAttention : votre reponse ne correspond a aucune des propositions.\n\nVeuillez reconsiderer votre reponse.\n\nAttention : Relance du programme\n--------------\n \nPour relancer le programme sur une nouvelle sequence tapez 1\nPour faire la meme etude pour une sequence de meme composition tapez 2,\nPour faire la meme etude sur une sequence aleatoire tapez 3,\nPour arreter le programme tapez 4 :\n".encode())
-				reponse=con.recv(1024).decode()
-#---------------------------------------------#
-
-				continue
-
-#--------------Mise en reseau-----------------#
-			if premiere_analyse:
-				con.sendall((" \nL analyse de votre sequence a ete effectuee avec succes. \n \nPour relancer le programme sur une nouvelle sequence tapez 1\nPour faire la meme etude pour une sequence de meme composition tapez 2,\nPour faire la meme etude sur une sequence aleatoire tapez 3,\nPour arreter le programme tapez 4 :\n ".encode()))
-			else:
-				con.sendall("\nPour relancer le programme sur une nouvelle sequence tapez 1\nPour faire la meme etude pour une sequence de meme composition tapez 2,\nPour faire la meme etude sur une sequence aleatoire tapez 3,\nPour arreter le programme tapez 4 :\n ".encode())
-			reponse=con.recv(1024).decode()
-	con.sendall("\n---------------\nArret du programme\nVous etes deconnecte du serveur\n---------------\n".encode())
-	con.shutdown(1)
-	con.close()
-#--------------------------------------------#
-"""
+	

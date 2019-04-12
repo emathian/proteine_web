@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #----------------------------------------------------------------------------------------------------------------------------------------#
-#                                                                     Projet Python 4BIM 2019
+#                                                                     Projet Web Python 4BIM 2019
 #                                                             Analyse de sequences nucleiques et proteiques
 #----------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -199,6 +199,8 @@ def choix(type_seq, id_seq, fichier, loc): # choix(type_seq, graph, id_seq, fich
   des = des.replace(",", "_")
   des = des.replace(".", "_")
   des = des.replace("|", "_")
+  des = des.replace("/", "_")
+  des=des.replace("\\","")
   if type_seq=="prot":
     nom_dossier=creation_repertoire(des,type_seq)
     file_name = "Analyse_proteine_"+des
@@ -223,24 +225,13 @@ def creation_repertoire(des,type_seq):
     la description est donnée en argument. Si le répertoire a déjà été crée lors d'une précédente analyse un Warning est envoyé à l'utilisateur.
     Il pourra faire le choix d'approfondir l'analyse de la séquence ou de lancer le programme sur une autre séquence."""
     os.chdir("./static/data")
-    #premiere_analyse=True
     if type_seq=="prot":
-        #try:
-        #	os.mkdir("Analyse_proteine_"+des) # Permet de tester si le dossier '"Analyse_"+des' existe.
-        #except FileExistsError:
-        #	premiere_analyse=False # Si le dossier existe deja alors l'analyse de la sequence entree existe deja, on ne souhaite pas la refaire inutilement.
-        #	print(" \nL'analyse de cette sequence a deja ete effectuee, vous pouvez \napprofondir cette analyse ou effectuer une annalyse sur une nouvelle sequence. \n")
         os.mkdir("Analyse_proteine_"+des)
-        os.chdir("./Analyse_proteine_"+des) # Si le dossier existe deja il n'est pas cree et on rentre simplement dedans, sinon il a deja ete creer dans le 'try' et donc on rentre dedans.
+        os.chdir("./Analyse_proteine_"+des)
         return("Analyse_proteine_"+des)
     else:
-        #try:
-        #	os.mkdir("Analyse_adn_"+des) # Permet de tester si le dossier '"Analyse_"+des' existe.
-        #except FileExistsError:
-        #	premiere_analyse=False # Si le dossier existe deja alors l'analyse de la sequence entree existe deja, on ne souhaite pas la refaire inutilement.
-        #	print(" \nL'analyse de cette sequence a deja ete effectuee, vous pouvez \napprofondir cette analyse ou effectuer une annalyse sur une nouvelle sequence. \n")
         os.mkdir("Analyse_adn_"+des)
-        os.chdir("./Analyse_adn_"+des) # Si le dossier existe deja il n'est pas cree et on rentre simplement dedans, sinon il a deja ete creer dans le 'try' et donc on rentre dedans.
+        os.chdir("./Analyse_adn_"+des)
         return("Analyse_adn_"+des)
 
 

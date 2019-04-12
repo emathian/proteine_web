@@ -11,13 +11,8 @@ from flask import render_template, redirect, url_for
 import json
 import re
 from flask import send_from_directory
-# from data import USERS
-# Set API dev in an another file
-#from api import SITE_API
 
 app = Flask(__name__)
-# Add the API
-# app.register_blueprint(SITE_API)
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/<identifiant>')
@@ -30,15 +25,13 @@ def index(identifiant=None):
         localisation = request.form["where"]
         ID =  request.form["id"]
         fichier =  request.form["seq"]
-        ##graph = request.form["choix"] # On l'a enlevé finalement
         liste_dossier=os.listdir("static/data/")
         for file in liste_dossier :
             if ID in file :
                 exist=True
         if not exist :
-            nom_dossier,error,type_error=ag.choix(type_seq,ID,fichier,localisation) #(type_seq,graph,ID,fichier,localisation)
+            nom_dossier,error,type_error=ag.choix(type_seq,ID,fichier,localisation)
             if type_error!=0:
-                #abort(make_response(error, type_error))
                 return render_template('index.html',error=error,type_error=type_error)
             else:
                 identifiant=ID
@@ -64,11 +57,6 @@ def find_ref(ID_search):
             return False
 
 
-@app.route('/refs/', methods=['GET'])
-@app.route('/refs/<ID>/')
-def ref(ID=None):
-     if not ID:
-            return render_template('ref.html', refs=REFS)
 
 def readfile(nomfichier):
 	text = open(nomfichier, 'r+')
@@ -92,7 +80,7 @@ def get_infos_analyse(nomdossier):
 
 
 
-@app.route('/analyses/')#, methods=['GET', 'POST'])
+@app.route('/analyses/')
 @app.route('/analyses/<nomdossier>/')
 def analyses(nomdossier=None,filtred_data=None):
     """ Affiche la liste des analyses déjà effectuées ainsi que le contenu (fichier texte+images) des résultats des analyses """
@@ -132,8 +120,6 @@ def get_info(liste_dossier, pattern):
         return render_template('analyses.html',analysis=texte, images=image)
     else:
         return render_template('analyses.html',error="Pas de dossier d'analyse nommé %s."%(pattern))
-        #abort(make_response('No user named %s'%(username), 501))
-
 
 
 @app.route('/search/', methods=['GET'])
