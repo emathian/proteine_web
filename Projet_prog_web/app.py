@@ -46,7 +46,7 @@ def index(identifiant=None):
                 image,texte=get_infos_analyse(nom_dossier)
                 return render_template('analyses.html',analysis=texte, images=image)
         else :
-            return render_template('index.html',error="L'analyse que vous souhaitez effectuer existe déjà dans notre base de donnée.\nRendez-vous sur la page Analyses pour la consulter ou demandez une autre analyse.")
+            return render_template('index.html',error="L'analyse que vous souhaitez effectuer existe déjà dans notre base de donnée.\n Rendez-vous sur la page Analyses pour la consulter ou demandez une autre analyse.")
     return render_template('index.html')
 
 
@@ -142,6 +142,7 @@ def search(nomdossier=None):
     app.logger.debug(request.args)
     if not nomdossier:
         pattern=request.args["pattern"]
+        pattern=pattern.strip()
         if "regexp" in request.args:
             liste_dossier=os.listdir("static/data/")
             return get_info_filtred_data(liste_dossier, pattern)

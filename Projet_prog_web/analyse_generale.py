@@ -191,14 +191,14 @@ def choix(type_seq, id_seq, fichier, loc): # choix(type_seq, graph, id_seq, fich
     print("FICHIER:"+id_seq)
     print("DESCRIPTION:"+des)
     print("SEQUENCE:"+seq)
-  des = des.replace(" ", "")
-  des = des.replace(",", "_")
-  des = des.replace(".", "_")
-  des = des.replace("|", "_")
   if type(seq)==int:
     error=des
     type_error=seq
     return("",error,type_error)
+  des = des.replace(" ", "")
+  des = des.replace(",", "_")
+  des = des.replace(".", "_")
+  des = des.replace("|", "_")
   if type_seq=="prot":
     nom_dossier=creation_repertoire(des,type_seq)
     file_name = "Analyse_proteine_"+des
