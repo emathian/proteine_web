@@ -5,15 +5,21 @@
 			<h2 class="mt-5">Projet Réseau S2 4BIM INSA Lyon, Louise Gsell, Hanâ Lbath, Emilie Mathian</h2> 
 			<h3 class="mt-5">Objectif de ce site web</h3>    
 			<p class="lead">
-Il permet d’analyser des séquences protéiques ou nucléiques (ADN) au format fasta. En ce qui concerne l'analyse de séquences nucléiques, ce site permet de connaître la composition de la séquence, le pourcentage de C+G et le nombre d'îlot CpG. En ce qui concerne les séquences protéiques, on peut calculer le nombre de résidus hydrophobes, le pourcentage de résidus chargés et la charge nette de la séquence.
+Il permet d’analyser des séquences protéiques ou nucléiques (ADN) au format fasta. En ce qui concerne l'analyse de séquences nucléiques, ce site permet de connaître la composition de la séquence, le pourcentage de C+G et le nombre d'îlot CpG. En ce qui concerne les séquences protéiques, on peut calculer le nombre de résidus hydrophobes, le pourcentage de résidus chargés et la charge nette de la séquence. <br>
 
 			<h3 class="mt-5">Fonctionnement de ce site web</h3> 
 			<p class="lead">
-Il peut gérer aussi bien des fichiers fasta stockés sur la machine que des fiches fasta en ligne. 
-Lors de son fonctionnement, il récupère la séquence fasta souhaitée et crée des fichiers résultats tabulés (fichiers « .txt ») pouvant être ouvert en .txt ou avec un tableur comme Excel. Il crée également dans ce dossier des graphiques (fichiers « .png ») si l’utilisateur le souhaite, en se basant sur son analyse (à condition que la machine soit équipée du module matplotlib, dans le cas contraire il ne crée que les fichiers tabulés). Ces données sont créées de manière automatique et sont classées dans un dossier portant comme nom « Analyse_ » suivit de la description de la séquence étudiée. Ce dossier sera automatiquement exporté dans le répertoire courant (celui où se trouve le script).
-Ce script offre la possibilité d’approfondir l’analyse en la répétant sur une ou plusieurs séquences aléatoires de même longueur et de même type que la séquence de référence et/ou sur une ou plusieurs séquences aléatoires de même composition. Si l’utilisateur fait le choix d’effectuer un ou plusieurs des approfondissements préalablement cités, tous les fichiers et graphiques générés au cours de ces approfondissements seront classés dans le même dossier que la séquence de référence. Toutes les précautions nécessaires sont prises lors de la création des résultats par le script pour ne pas écraser d’éventuels résultats préexistants. 
-Lors de chaque analyse le graphique créé s’affiche automatiquement, il n’est pas nécessaire de l’enregistrer il se trouve d’ores et déjà dans le dossier approprié. Cette fenêtre surgissante est simplement là pour donner un aperçu des résultats établis, et ainsi aider l’utilisateur à décider s’il souhaite approfondir ou non son étude. L’apparition de cette fenêtre interrompt le programme, pour continuer il suffit de la fermer.
+Sur la page d'accueil, l'utilisateur peut choisir s'il souhaite effectuer une analyse de séquence protéique ou nucléique. Il peut aussi choisir s'il souhaite effectuer l'analyse d'une séquence se trouvant sur les bases de données en ligne  Uniprot ou EMBL. Pour ce faire, l'utilisateur rentre l'identifiant de la séquence dans le champ dédié. L'utilisateur peut aussi choisir d'anaylyser plutôt une séquence qu'il a déjà au format fasta. Pour ce faire, il doit copier sa séquence (au format fasta) dans le champ dédié. L'utilisateur peut alors lancer l'analyse en cliquant sur le bouton "submit".<br>
+<br>
+Lors de son fonctionnement, le site récupère la séquence fasta souhaitée et crée des fichiers résultats tabulés (fichiers « .txt »). Ces données sont créées de manière automatique et sont classées dans un dossier portant comme nom « Analyse_ » suivit de la description de la séquence étudiée. Les résultats sont directement affichés dans une page dédiée à cette analyse. Des graphiques (fichiers « .png ») se basant sur l'analyse sont également créés dans ce dossier (à condition que la machine soit équipée du module matplotlib, dans le cas contraire il ne crée que les fichiers tabulés). Les graphes sont affichés de même sur la page de résultats d'analyse.<br>
+<br>
+Dans la barre de recherche, l'utilisateur peut effectuer des recherches exactes sur les séquences dont l'analyse a déjà été effectuée. Il peut également effectuer des recherches d'expressions régulières en écrivant sa requête de la façon suivante : .*requete.*
+</p>
 
+			<h3 class="mt-5">Exemples de séquences à analyser</h3> 
+			<p class="lead">
+Séquences protéiques : Q9NQ25, P69464 <br>
+Séquences nucléiques : FJ767773, AF008202 
 </p>
         
 {% endblock %}
